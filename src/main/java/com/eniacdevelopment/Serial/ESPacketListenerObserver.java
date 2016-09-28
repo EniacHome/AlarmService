@@ -1,4 +1,3 @@
-
 package com.eniacdevelopment.Serial;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
