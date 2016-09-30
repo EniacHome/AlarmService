@@ -21,6 +21,7 @@ public class Main {
 
         //TODO ElasticSearch init should move to IoC eventually
         TransportClient transportClient = null;
+
         try {
             transportClient = TransportClient.builder().build()
                     .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
