@@ -10,7 +10,7 @@ import java.util.function.Consumer;
  * Created by larsg on 9/23/2016.
  */
 public class SocketListener {
-    private static final int PORT = 0;
+    private static final int PORT = 9090;
 
     private Consumer<Socket> consumer;
     private boolean listen = true;

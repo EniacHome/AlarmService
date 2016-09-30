@@ -12,13 +12,16 @@ public class Main {
         PacketListenerSubject packetListenerSubject = new PacketListenerSubject();
 
         SocketPacketListenerObserver socketPacketListenerObserver = new SocketPacketListenerObserver();
+        ESPacketListenerObserver esPacketListenerObserver = new ESPacketListenerObserver();
+
+        packetListenerSubject.addObserver(socketPacketListenerObserver);
+        packetListenerSubject.addObserver(esPacketListenerObserver);
+
         try {
             new SocketListener(socketPacketListenerObserver::addSocket, true);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        packetListenerSubject.addObserver(socketPacketListenerObserver);
 
         InitializeSerial(packetListenerSubject);
 
