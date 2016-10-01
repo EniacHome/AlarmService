@@ -1,18 +1,37 @@
 package com.eniacdevelopment.Application;
 
-import com.eniacdevelopment.Serial.*;
+import com.eniacdevelopment.Serial.ESPacketListenerObserver;
+import com.eniacdevelopment.Serial.PacketListenerSubject;
+import com.eniacdevelopment.Serial.SocketPacketListenerObserver;
 import com.eniacdevelopment.SocketListener;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fazecast.jSerialComm.SerialPort;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class Main {
 
     public static void main(String[] args) {
+        //TODO Jackson init should move to IoC eventually
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        //TODO ElasticSearch init should move to IoC eventually
+        TransportClient transportClient = null;
+        try {
+            transportClient = TransportClient.builder().build()
+                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
         PacketListenerSubject packetListenerSubject = new PacketListenerSubject();
 
-        SocketPacketListenerObserver socketPacketListenerObserver = new SocketPacketListenerObserver();
-        ESPacketListenerObserver esPacketListenerObserver = new ESPacketListenerObserver();
+        SocketPacketListenerObserver socketPacketListenerObserver = new SocketPacketListenerObserver(objectMapper.writer());
+        ESPacketListenerObserver esPacketListenerObserver = new ESPacketListenerObserver(transportClient, objectMapper.writer());
 
         packetListenerSubject.addObserver(socketPacketListenerObserver);
         packetListenerSubject.addObserver(esPacketListenerObserver);
