@@ -1,3 +1,4 @@
+
 package com.eniacdevelopment.Serial;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -32,4 +33,5 @@ public class ESPacketListenerObserver extends PacketListenerObserver {
                 .refresh(true);
 
          this.transportClient.index(indexRequest);
+    }
 }
