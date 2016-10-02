@@ -1,9 +1,10 @@
 package com.eniacdevelopment.Serial;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -17,6 +18,11 @@ import java.util.List;
  */
 public class SocketPacketListenerObserver extends PacketListenerObserver {
     private final List<Socket> sockets = Collections.synchronizedList(new ArrayList<Socket>()); // Thread-Safe list
+    private final ObjectWriter objectWriter;
+
+    public SocketPacketListenerObserver(ObjectWriter objectWriter){
+        this.objectWriter = objectWriter;
+    }
 
     public void addSocket(Socket socket) {
         synchronized (this.sockets) {
@@ -28,10 +34,9 @@ public class SocketPacketListenerObserver extends PacketListenerObserver {
     public void eventNotify(SerialNotification serialNotification) {
         // Grab all data not covered by SerialNotification from es database
 
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonSerialNotification;
+        byte[] jsonSerialNotification;
         try {
-            jsonSerialNotification = mapper.writeValueAsString(serialNotification);
+            jsonSerialNotification = objectWriter.writeValueAsBytes(serialNotification);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return;
@@ -45,8 +50,8 @@ public class SocketPacketListenerObserver extends PacketListenerObserver {
                 OutputStreamWriter outputStreamWriter = null;
                 try {
                     outputStreamWriter = new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8);
-                    outputStreamWriter.write(jsonSerialNotification);
-                    outputStreamWriter.flush();
+                    OutputStream outputStream = socket.getOutputStream();
+                    outputStream.write(jsonSerialNotification);
                 } catch (IOException e) {
                     // If unable to cummunicate, force reconnect from client side
                     try {

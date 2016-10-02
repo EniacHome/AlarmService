@@ -10,10 +10,10 @@ import java.util.function.Consumer;
  * Created by larsg on 9/23/2016.
  */
 public class SocketListener {
-    private static final int PORT = 0;
-
     private Consumer<Socket> consumer;
+    private final int port;
     private boolean listen = true;
+
     private final ServerSocket serverSocket = new ServerSocket();
 
     private final Thread listenerThread = new Thread(() -> {
@@ -23,8 +23,9 @@ public class SocketListener {
         }
     });
 
-    public SocketListener(Consumer<Socket> consumer, boolean startListening) throws IOException {
+    public SocketListener(Consumer<Socket> consumer, int port, boolean startListening) throws IOException {
         this.consumer = consumer;
+        this.port = port;
 
         if (startListening) {
             this.startListening();
@@ -32,11 +33,11 @@ public class SocketListener {
     }
 
     public int getPort() {
-        return this.serverSocket.getLocalPort();
+        return this.port;
     }
 
     public void startListening() throws IOException {
-        this.serverSocket.bind(new InetSocketAddress(PORT));
+        this.serverSocket.bind(new InetSocketAddress(port));
         this.listen = true;
 
         if (!this.listenerThread.isAlive()) {

@@ -3,6 +3,7 @@ package com.eniacdevelopment.Application;
 import com.eniacdevelopment.Serial.SerialNotification;
 import com.eniacdevelopment.Serial.SocketPacketListenerObserver;
 import com.eniacdevelopment.SocketListener;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,10 +14,12 @@ import java.io.InputStreamReader;
  */
 public class MainJsonTest {
     public static void main(String[] args) throws IOException {
-        SocketPacketListenerObserver socketPacketListenerObserver = new SocketPacketListenerObserver();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        SocketPacketListenerObserver socketPacketListenerObserver = new SocketPacketListenerObserver(objectMapper.writer());
         SocketListener socketListener;
         try {
-            socketListener = new SocketListener(socketPacketListenerObserver::addSocket, true);
+            socketListener = new SocketListener(socketPacketListenerObserver::addSocket, 0, true);
         } catch (IOException e) {
             e.printStackTrace();
             return;
