@@ -34,11 +34,12 @@ public class SocketPacketListenerObserver extends PacketListenerObserver {
     public void eventNotify(SerialNotification serialNotification) {
         // Grab all data not covered by SerialNotification from es database
 
-        byte[] jsonSerialNotification = new byte[0];
+        byte[] jsonSerialNotification;
         try {
             jsonSerialNotification = objectWriter.writeValueAsBytes(serialNotification);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+            return;
         }
 
         synchronized (this.sockets) {
