@@ -37,7 +37,7 @@ public class Main {
         packetListenerSubject.addObserver(esPacketListenerObserver);
 
         try {
-            new SocketListener(socketPacketListenerObserver::addSocket, true);
+            new SocketListener(socketPacketListenerObserver::addSocket, 9090, true);
         } catch (IOException e) {
             e.printStackTrace();
         }

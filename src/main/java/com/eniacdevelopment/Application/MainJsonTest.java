@@ -19,7 +19,7 @@ public class MainJsonTest {
         SocketPacketListenerObserver socketPacketListenerObserver = new SocketPacketListenerObserver(objectMapper.writer());
         SocketListener socketListener;
         try {
-            socketListener = new SocketListener(socketPacketListenerObserver::addSocket, true);
+            socketListener = new SocketListener(socketPacketListenerObserver::addSocket, 0, true);
         } catch (IOException e) {
             e.printStackTrace();
             return;
