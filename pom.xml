@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.eniacdevelopment.notificationservice</groupId>
-    <artifactId>NotificationService</artifactId>
+    <groupId>com.eniacdevelopment.eniachome.alarmservice</groupId>
+    <artifactId>AlarmService</artifactId>
     <version>1.0-SNAPSHOT</version>
     <build>
         <plugins>
@@ -20,11 +20,6 @@
         </plugins>
     </build>
     <dependencies>
-        <dependency>
-            <groupId>com.eniacdevelopment.notificationservice</groupId>
-            <artifactId>NotificationService</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
