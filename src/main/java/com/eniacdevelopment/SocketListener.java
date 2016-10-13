@@ -19,6 +19,7 @@ public class SocketListener {
     private final Thread listenerThread = new Thread(() -> {
         while (listen) try {
             this.consumer.accept(this.serverSocket.accept());
+            Socket x = this.serverSocket.accept();
         } catch (IOException ignored) {
         }
     });
