@@ -1,4 +1,4 @@
-package com.eniacdevelopment.Serial;
+package com.eniacdevelopment.EniacHome.Serial;
 
 /**
  * Created by larsg on 9/16/2016.

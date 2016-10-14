@@ -1,4 +1,4 @@
-package com.eniacdevelopment.Serial;
+package com.eniacdevelopment.EniacHome.Serial;
 
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortEvent;

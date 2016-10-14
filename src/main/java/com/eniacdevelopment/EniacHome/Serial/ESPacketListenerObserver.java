@@ -1,5 +1,5 @@
 
-package com.eniacdevelopment.Serial;
+package com.eniacdevelopment.EniacHome.Serial;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectWriter;
