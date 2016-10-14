@@ -1,8 +1,8 @@
-package com.eniacdevelopment.Application;
+package com.eniacdevelopment.EniacHome.Application;
 
-import com.eniacdevelopment.Serial.SerialNotification;
-import com.eniacdevelopment.Serial.SocketPacketListenerObserver;
-import com.eniacdevelopment.SocketListener;
+import com.eniacdevelopment.EniacHome.Serial.SerialNotification;
+import com.eniacdevelopment.EniacHome.Serial.SocketPacketListenerObserver;
+import com.eniacdevelopment.EniacHome.SocketListener;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;

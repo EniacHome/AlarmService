@@ -1,4 +1,4 @@
-package com.eniacdevelopment.Controller;
+package com.eniacdevelopment.EniacHome.Resources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
  * Created by larsg on 10/13/2016.
  */
 @Path("/request")
-public class RequestController {
+class ConfigurationResource {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)

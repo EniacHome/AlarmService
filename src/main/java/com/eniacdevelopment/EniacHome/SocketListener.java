@@ -1,4 +1,4 @@
-package com.eniacdevelopment;
+package com.eniacdevelopment.EniacHome;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
