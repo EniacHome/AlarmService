@@ -22,12 +22,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="NotificationService" />
+        <module name="AlarmService" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="EniacSerial" target="1.5" />
-      <module name="NotificationService" target="1.8" />
+      <module name="AlarmService" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

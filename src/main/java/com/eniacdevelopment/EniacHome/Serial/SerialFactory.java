@@ -1,27 +1,34 @@
 package com.eniacdevelopment.EniacHome.Serial;
 
+import com.eniacdevelopment.EniacHome.DataModel.Configuration.SerialConfiguration;
+import com.eniacdevelopment.EniacHome.Repositories.ConfigurationRepository;
+import com.fazecast.jSerialComm.SerialPort;
+
 /**
  * Created by larsg on 11/13/2016.
  */
-//public class SerialFactory {
-//    private SerialConfiguration serialConfiguration;
-//    private SerialPort serialPortInstance;
-//
-//    public SerialFactory(SerialConfiguration serialConfiguration){
-//
-//    }
-//
-//    public void InitializeSerial(){
-//        if(serialPortInstance != null) {
-//            serialPortInstance.closePort();
-//        }
-//        serialPortInstance = SerialPort.getCommPort(serialConfigurationq.PortDescriptor);
+public class SerialFactory {
+    private SerialPort serialPortInstance;
+    private final ConfigurationRepository configurationRepository;
+
+    public SerialFactory(ConfigurationRepository configurationRepository){
+        this.configurationRepository = configurationRepository;
+    }
+
+    public void InitializeSerial(){
+        SerialConfiguration serialConfiguration = null;
+        serialConfiguration = configurationRepository.getConfiguration(SerialConfiguration.class, "0");
+
+        if(serialPortInstance != null) {
+            serialPortInstance.closePort();
+        }
+        serialPortInstance = SerialPort.getCommPort(serialConfiguration.PortDescriptor);
 //        serialPortInstance.addDataListener(packetListenerSubject);
-//        serialPortInstance.setComPortParameters(
-//                serialConfiguration.BaudRate,
-//                serialConfiguration.DataBits,
-//                serialConfiguration.StopBits,
-//                serialConfiguration.Parity); //9600baud 8data 1stop 0parity
-//        serialPortInstance.openPort();
-//    }
-//}
+        serialPortInstance.setComPortParameters(
+                serialConfiguration.BaudRate,
+                serialConfiguration.DataBits,
+                serialConfiguration.StopBits,
+                serialConfiguration.Parity);
+        serialPortInstance.openPort();
+    }
+}

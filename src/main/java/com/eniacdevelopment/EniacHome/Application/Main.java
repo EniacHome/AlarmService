@@ -1,24 +1,20 @@
 package com.eniacdevelopment.EniacHome.Application;
 
 import com.eniacdevelopment.EniacHome.Binding.MainBinder;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.URI;
-import java.net.UnknownHostException;
 
 /**
  * Main class.
  */
 public class Main {
     // Base URI the Grizzly HTTP server will listen on
-    public static final String BASE_URI = "http://localhost:9090/myapp/";
+    public static final String BASE_URI = "http://localhost:9090/service/";
 
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
@@ -30,7 +26,8 @@ public class Main {
         // in com.eniacdevelopment package
         final ResourceConfig rc = new ResourceConfig()
                 .packages("com.eniacdevelopment.EniacHome.Resources")
-                .register(new MainBinder());
+                .register(new MainBinder())
+                .register(JacksonJsonProvider.class);
 
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
