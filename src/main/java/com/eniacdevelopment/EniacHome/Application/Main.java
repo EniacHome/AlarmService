@@ -1,61 +1,51 @@
 package com.eniacdevelopment.EniacHome.Application;
 
-import com.eniacdevelopment.EniacHome.SocketListener;
-import com.eniacdevelopment.EniacHome.Serial.ESPacketListenerObserver;
-import com.eniacdevelopment.EniacHome.Serial.PacketListenerSubject;
-import com.eniacdevelopment.EniacHome.Serial.SocketPacketListenerObserver;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fazecast.jSerialComm.SerialPort;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import com.eniacdevelopment.EniacHome.Binding.MainBinder;
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.URI;
 
+/**
+ * Main class.
+ */
 public class Main {
+    // Base URI the Grizzly HTTP server will listen on
+    public static final String BASE_URI = "http://localhost:9090/service/";
 
-    public static void main(String[] args) {
-        //TODO Jackson init should move to IoC eventually
-        ObjectMapper objectMapper = new ObjectMapper();
+    /**
+     * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
+     *
+     * @return Grizzly HTTP server.
+     */
+    public static HttpServer startServer() {
+        // create a resource config that scans for JAX-RS resources and providers
+        // in com.eniacdevelopment package
+        final ResourceConfig rc = new ResourceConfig()
+                .packages("com.eniacdevelopment.EniacHome.Resources")
+                .register(new MainBinder())
+                .register(JacksonJsonProvider.class);
 
-        //TODO ElasticSearch init should move to IoC eventually
-        TransportClient transportClient = null;
-
-        try {
-            transportClient = TransportClient.builder().build()
-                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-
-        PacketListenerSubject packetListenerSubject = new PacketListenerSubject();
-
-        SocketPacketListenerObserver socketPacketListenerObserver = new SocketPacketListenerObserver(objectMapper.writer());
-        ESPacketListenerObserver esPacketListenerObserver = new ESPacketListenerObserver(transportClient, objectMapper.writer());
-
-        packetListenerSubject.addObserver(socketPacketListenerObserver);
-        packetListenerSubject.addObserver(esPacketListenerObserver);
-
-        try {
-            new SocketListener(socketPacketListenerObserver::addSocket, 9090, true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        InitializeSerial(packetListenerSubject);
-
-        while (true) {
-        }
-
-        //port.closePort();
-        //System.out.println("END!");
+        // create and start a new instance of grizzly http server
+        // exposing the Jersey application at BASE_URI
+        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }
 
-    private static void InitializeSerial(PacketListenerSubject packetListenerSubject) {
-        SerialPort port = SerialPort.getCommPorts()[0];
-        port.addDataListener(packetListenerSubject);
-        port.setComPortParameters(9600, 8, 1, 0); //9600baud 8data 1stop 0parity
-        port.openPort();
+    /**
+     * Main method.
+     *
+     * @param args
+     * @throws IOException
+     */
+    public static void main(String[] args) throws IOException {
+        final HttpServer server = startServer();
+        System.out.println(String.format("Jersey app started with WADL available at "
+                + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));
+        System.in.read();
+        server.stop();
     }
 }
+

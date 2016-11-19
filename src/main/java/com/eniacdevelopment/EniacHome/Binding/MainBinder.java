@@ -1,0 +1,21 @@
+package com.eniacdevelopment.EniacHome.Binding;
+
+import com.eniacdevelopment.EniacHome.DataModel.Configuration.SerialConfiguration;
+import com.eniacdevelopment.EniacHome.Repositories.ConfigurationRepository;
+import org.glassfish.hk2.api.TypeLiteral;
+import org.glassfish.hk2.utilities.binding.AbstractBinder;
+
+import javax.inject.Singleton;
+
+/**
+ * Created by larsg on 11/16/2016.
+ */
+public class MainBinder extends AbstractBinder {
+    @Override
+    protected void configure() {
+        install(new JacksonBinder());
+        install(new TransportClientBinder());
+
+        bind(ConfigurationRepository.class).to(ConfigurationRepository.class).in(Singleton.class);
+    }
+}
