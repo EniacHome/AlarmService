@@ -1,6 +1,8 @@
 package com.eniacdevelopment.EniacHome.Application;
 
 import com.eniacdevelopment.EniacHome.Binding.MainBinder;
+import com.eniacdevelopment.EniacHome.Repositories.ConfigurationRepository;
+import com.eniacdevelopment.EniacHome.Serial.SerialSubject;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;

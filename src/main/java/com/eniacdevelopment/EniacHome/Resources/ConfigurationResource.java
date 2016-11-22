@@ -2,6 +2,9 @@ package com.eniacdevelopment.EniacHome.Resources;
 
 import com.eniacdevelopment.EniacHome.DataModel.Configuration.SerialConfiguration;
 import com.eniacdevelopment.EniacHome.Repositories.ConfigurationRepository;
+import com.eniacdevelopment.EniacHome.Serial.SerialSubject;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.elasticsearch.client.transport.TransportClient;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -13,11 +16,13 @@ import java.util.List;
  */
 @Path("/configuration")
 public class ConfigurationResource {
-    private ConfigurationRepository configurationRepository;
+    private final ConfigurationRepository configurationRepository;
+    private final SerialSubject serialSubject;
 
     @Inject
-    public ConfigurationResource(ConfigurationRepository configurationRepository){
+    public ConfigurationResource(ConfigurationRepository configurationRepository, SerialSubject serialSubject){
         this.configurationRepository = configurationRepository;
+        this.serialSubject = serialSubject;
     }
 
     //region SerialConfiguration
