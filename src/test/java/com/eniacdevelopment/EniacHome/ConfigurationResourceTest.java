@@ -1,15 +1,11 @@
 package com.eniacdevelopment.EniacHome;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 
-import com.eniacdevelopment.EniacHome.Application.Main;
 import com.eniacdevelopment.EniacHome.DataModel.Configuration.SerialConfiguration;
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.glassfish.grizzly.http.server.HttpServer;
 
 import org.junit.After;
@@ -28,13 +24,8 @@ public class ConfigurationResourceTest {
 
     @Before
     public void setUp() throws Exception {
-        // start the server
-        server = Main.startServer();
-        // create the client
-        Client c = ClientBuilder.newClient()
-                .register(JacksonJsonProvider.class);
-
-        target = c.target(Main.BASE_URI);
+        server = UnitTestShared.getServer();
+        target = UnitTestShared.getWebTarger();
     }
 
     @After
@@ -46,13 +37,13 @@ public class ConfigurationResourceTest {
     @Test
     public void setIt(){
         SerialConfiguration config = new SerialConfiguration(){{
-            Id = "TESTCONFIG";
+            Id = "CONFIG";
             Active = true;
             BaudRate = 10417;
             DataBits = 8;
             Parity = 0;
             StopBits = 1;
-            PortDescriptor = "Something";
+            PortDescriptor = "COM3";
         }};
 
         Response response = target.path("configuration").path("serial").request().post(Entity.json(config));
