@@ -1,6 +1,7 @@
 package com.eniacdevelopment.EniacHome.Binding;
 
 import com.eniacdevelopment.EniacHome.Repositories.ConfigurationRepository;
+import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 
 import javax.inject.Singleton;

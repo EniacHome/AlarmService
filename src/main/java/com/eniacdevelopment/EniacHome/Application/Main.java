@@ -1,8 +1,7 @@
 package com.eniacdevelopment.EniacHome.Application;
 
 import com.eniacdevelopment.EniacHome.Binding.MainBinder;
-import com.eniacdevelopment.EniacHome.Repositories.ConfigurationRepository;
-import com.eniacdevelopment.EniacHome.Serial.SerialSubject;
+import com.eniacdevelopment.EniacHome.Features.ImmediateFeature;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -26,14 +25,15 @@ public class Main {
     public static HttpServer startServer() {
         // create a resource config that scans for JAX-RS resources and providers
         // in com.eniacdevelopment package
-        final ResourceConfig rc = new ResourceConfig()
+        final ResourceConfig resourceConfig = new ResourceConfig()
                 .packages("com.eniacdevelopment.EniacHome.Resources")
+                .register(ImmediateFeature.class)
                 .register(new MainBinder())
                 .register(JacksonJsonProvider.class);
 
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
-        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), resourceConfig);
     }
 
     /**
