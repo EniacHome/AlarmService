@@ -1,6 +1,8 @@
 package com.eniacdevelopment.EniacHome.Binding;
 
 import com.eniacdevelopment.EniacHome.Repositories.ConfigurationRepository;
+import com.eniacdevelopment.EniacHome.Serial.SerialSubject;
+import org.glassfish.hk2.api.Immediate;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 
@@ -16,6 +18,6 @@ public class MainBinder extends AbstractBinder {
         install(new TransportClientBinder());
         install(new SerialBinder());
 
-        bind(ConfigurationRepository.class).to(ConfigurationRepository.class).in(Singleton.class);
+        bindAsContract(ConfigurationRepository.class).in(Singleton.class);
     }
 }

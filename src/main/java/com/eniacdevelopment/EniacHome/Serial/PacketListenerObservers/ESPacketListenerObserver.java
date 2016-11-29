@@ -1,10 +1,14 @@
 
-package com.eniacdevelopment.EniacHome.Serial;
+package com.eniacdevelopment.EniacHome.Serial.PacketListenerObservers;
 
+import com.eniacdevelopment.EniacHome.Serial.PacketListenerObserver;
+import com.eniacdevelopment.EniacHome.Serial.SerialNotification;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.transport.TransportClient;
+
+import javax.inject.Inject;
 
 /**
  * Created by larsg on 9/28/2016.
@@ -13,6 +17,7 @@ public class ESPacketListenerObserver extends PacketListenerObserver {
     private final ObjectWriter objectWriter;
     private final TransportClient transportClient;
 
+    @Inject
     public ESPacketListenerObserver(TransportClient transportClient, ObjectWriter objectWriter) {
         this.transportClient = transportClient;
         this.objectWriter = objectWriter;
