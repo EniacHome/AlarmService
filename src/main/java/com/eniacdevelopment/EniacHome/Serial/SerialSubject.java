@@ -47,17 +47,17 @@ public class SerialSubject implements SerialPortPacketListener {
             }};
         }
 
-        if(serialPortInstance != null) {
-            serialPortInstance.closePort();
+        if(this.serialPortInstance != null) {
+            this.serialPortInstance.closePort();
         }
-        serialPortInstance = SerialPort.getCommPort(serialConfiguration.PortDescriptor);
-        serialPortInstance.addDataListener(this);
-        serialPortInstance.setComPortParameters(
+        this.serialPortInstance = SerialPort.getCommPort(serialConfiguration.PortDescriptor);
+        this.serialPortInstance.addDataListener(this);
+        this.serialPortInstance.setComPortParameters(
                 serialConfiguration.BaudRate,
                 serialConfiguration.DataBits,
                 serialConfiguration.StopBits,
                 serialConfiguration.Parity);
-        serialPortInstance.openPort();
+        this.serialPortInstance.openPort();
     }
 
     @Override

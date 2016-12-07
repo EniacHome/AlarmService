@@ -7,6 +7,7 @@ import org.glassfish.hk2.api.ServiceLocator;
 import org.reflections.Reflections;
 
 import javax.inject.Inject;
+import java.util.Properties;
 import java.util.Set;
 
 /**
@@ -26,14 +27,22 @@ public class SerialSubjectFactory implements Factory<SerialSubject> {
 
     @Override
     public SerialSubject provide() {
+        this.serialSubject.initializeSerial();
+
+        Properties properties = serviceLocator.getService(Properties.class);
+
         //Get all types that extend PacketListenerObserver
         Reflections reflections = new Reflections("com.eniacdevelopment.EniacHome.Serial.PacketListenerObservers");
         Set<Class<? extends PacketListenerObserver>> observerClasses = reflections.getSubTypesOf(PacketListenerObserver.class);
 
         //Iterate all types and try to instantiate it using the ServiceLocator
         for (Class<? extends PacketListenerObserver> observerClass : observerClasses) {
-            PacketListenerObserver observer = this.serviceLocator.createAndInitialize(observerClass);
-            serialSubject.addObserver(observer);
+            //Get the observer from the ServiceLocator
+            PacketListenerObserver observer = this.serviceLocator.getService(observerClass);
+            if((observer != null) && !(properties.containsKey(observerClass.getName()) && !Boolean.parseBoolean((String) properties.get(observerClass.getName())))) {
+                //Only add the observer if it is found in the ServiceLocator and if it is enabled in config
+                serialSubject.addObserver(observer);
+            }
         }
 
         return this.serialSubject;
