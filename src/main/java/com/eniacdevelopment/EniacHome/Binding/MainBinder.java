@@ -1,8 +1,7 @@
 package com.eniacdevelopment.EniacHome.Binding;
 
-import com.eniacdevelopment.EniacHome.DataModel.Configuration.SerialConfiguration;
 import com.eniacdevelopment.EniacHome.Repositories.ConfigurationRepository;
-import org.glassfish.hk2.api.TypeLiteral;
+import com.eniacdevelopment.EniacHome.Serial.PacketListenerObserver;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 
 import javax.inject.Singleton;
@@ -15,7 +14,10 @@ public class MainBinder extends AbstractBinder {
     protected void configure() {
         install(new JacksonBinder());
         install(new TransportClientBinder());
+        install(new PacketListenerObserverBinder());
+        install(new SerialBinder());
+        install(new PropertiesBinder());
 
-        bind(ConfigurationRepository.class).to(ConfigurationRepository.class).in(Singleton.class);
+        bindAsContract(ConfigurationRepository.class).in(Singleton.class);
     }
 }

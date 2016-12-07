@@ -23,6 +23,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-sse</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.eniacdevelopment.eniachome.datamodel</groupId>
             <artifactId>DataModel</artifactId>
             <version>1.0-SNAPSHOT</version>
@@ -51,6 +56,11 @@
             <version>2.4.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.10</version>
+        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

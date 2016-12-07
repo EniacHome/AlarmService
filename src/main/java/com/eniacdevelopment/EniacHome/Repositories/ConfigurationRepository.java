@@ -8,6 +8,7 @@ import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.Strings;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 
@@ -99,7 +100,12 @@ public class ConfigurationRepository{
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        String id = searchResponse.getHits().getHits()[0].id();
+        String id = searchResponse.getHits().getAt(0).id();
+        if(Strings.isNullOrEmpty(id))
+        {
+            return null;
+        }
+
         return getConfiguration(type, id);
     }
 

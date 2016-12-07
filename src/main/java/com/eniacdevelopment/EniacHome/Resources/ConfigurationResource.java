@@ -13,16 +13,17 @@ import java.util.List;
  */
 @Path("/configuration")
 public class ConfigurationResource {
-    private ConfigurationRepository configurationRepository;
+    private final ConfigurationRepository configurationRepository;
 
     @Inject
     public ConfigurationResource(ConfigurationRepository configurationRepository){
         this.configurationRepository = configurationRepository;
     }
 
+    //region SerialConfiguration
     /**
-     * GETs all configurations from the repository
-     * @return All configurations
+     * GETs all configurations from the repository.
+     * @return All configurations.
      */
     @GET
     @Path("/serial")
@@ -43,6 +44,10 @@ public class ConfigurationResource {
         return this.configurationRepository.getConfiguration(SerialConfiguration.class, id);
     }
 
+    /**
+     * GETs the currently active configuration.
+     * @return The active configuration.
+     */
     @GET
     @Path("/serial/active")
     @Produces(MediaType.APPLICATION_JSON)
@@ -61,9 +66,14 @@ public class ConfigurationResource {
         this.configurationRepository.setConfiguration(serialConfiguration);
     }
 
+    /**
+     * DELETEs a single configuration from the repository.
+     * @param id Id to match.
+     */
     @DELETE
     @Path("/serial/{id}")
     public void deleteSerialConfiguration(@PathParam("id") String id) {
         this.configurationRepository.deleteConfiguration(SerialConfiguration.class, id);
     }
+    //endregion
 }
