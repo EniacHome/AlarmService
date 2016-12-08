@@ -1,10 +1,10 @@
 package com.eniacdevelopment.EniacHome.Configuration;
 
-import java.util.Dictionary;
+import java.util.Map;
 
 /**
  * Created by larsg on 12/1/2016.
  */
 public class PacketListenerObserverConfiguration {
-    Dictionary<String, Boolean> PacketListenerObservers;
+    public Map<String, Boolean> PacketListenerObservers;
 }

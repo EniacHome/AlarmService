@@ -1,11 +1,8 @@
 package com.eniacdevelopment.EniacHome.Binding;
 
+import com.eniacdevelopment.EniacHome.Binding.Factory.TransportClientFactory;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 /**
  * Created by larsg on 11/17/2016.
@@ -13,13 +10,6 @@ import java.net.UnknownHostException;
 public class TransportClientBinder extends AbstractBinder {
     @Override
     protected void configure() {
-        TransportClient transportClient = null;
-        try {
-            transportClient = TransportClient.builder().build()
-                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-        bind(transportClient).to(TransportClient.class);
+        bindFactory(TransportClientFactory.class).to(TransportClient.class);
     }
 }
