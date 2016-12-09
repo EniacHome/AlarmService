@@ -55,7 +55,7 @@ public class ConfigurationResource {
     }
 
     /**
-     * POSTs a single configuration to the repository.
+     * POSTs a single configuration to the repository. Create mode.
      * @param serialConfiguration The configuration to post.
      */
     @POST
@@ -66,7 +66,18 @@ public class ConfigurationResource {
     }
 
     /**
-     * DELETEs a single configuration from the repository.
+     * PUTs a single configuration to the repository. Update mode.
+     * @param serialConfiguration The configuration to update
+     */
+    @PUT
+    @Path("/serial")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void putSerialConfiguration(SerialConfiguration serialConfiguration){
+        this.configurationRepository.update(serialConfiguration);
+    }
+
+    /**
+     * DELETEs a single configuration from the repository. Delete mode.
      * @param id Id to match.
      */
     @DELETE

@@ -103,7 +103,7 @@ public abstract class RepositoryImpl<T extends Entity> implements Repository<T> 
                     .setIndex(this.index)
                     .setType(this.type.getName())
                     .setId(item.Id)
-                    .setSource(jsonItem)
+                    .setDoc(jsonItem)
                     .setRefresh(true)
                     .execute()
                     .get();

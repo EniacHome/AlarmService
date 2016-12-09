@@ -50,6 +50,21 @@ public class ConfigurationResourceTest {
     }
 
     @Test
+    public void updateIt(){
+        SerialConfiguration config = new SerialConfiguration(){{
+            Id = "CONFIG";
+            Active = true;
+            BaudRate = 9600;
+            DataBits = 9;
+            Parity = 1;
+            StopBits = 2;
+            PortDescriptor = "COM2";
+        }};
+
+        Response response = target.path("configuration").path("serial").request().put(Entity.json(config));
+    }
+
+    @Test
     public void getIt() {
         SerialConfiguration response = target.path("configuration").path("serial").path("CONFIG").request().get(SerialConfiguration.class);
         assertEquals("COM3", response.PortDescriptor);
