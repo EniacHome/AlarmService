@@ -34,7 +34,7 @@ public class AuthenticationResource {
             Lastname = "Smith";
         }};
 
-        this.userRepository.remove(user);
+        this.userRepository.delete(user.Id);
     }
 
     @POST

@@ -1,6 +1,7 @@
 package com.eniacdevelopment.EniacHome.Serial;
 
 import com.eniacdevelopment.EniacHome.DataModel.Configuration.SerialConfiguration;
+import com.eniacdevelopment.EniacHome.Repositories.ElasticSearch.ConfigurationRepositoryImpl;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.ConfigurationRepository;
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortEvent;
@@ -19,11 +20,11 @@ public class SerialSubject implements SerialPortPacketListener {
     private final List<PacketListenerObserver> packetListenerObservers =
             Collections.synchronizedList(new ArrayList<PacketListenerObserver>());
 
-    private final ConfigurationRepository configurationRepository;
+    private final ConfigurationRepository<SerialConfiguration> configurationRepository;
     private SerialPort serialPortInstance;
 
     @Inject
-    public SerialSubject(ConfigurationRepository configurationRepository){
+    public SerialSubject(ConfigurationRepository<SerialConfiguration> configurationRepository){
         this.configurationRepository = configurationRepository;
         this.initializeSerial();
     }
@@ -35,7 +36,7 @@ public class SerialSubject implements SerialPortPacketListener {
     }
 
     public void initializeSerial(){
-        SerialConfiguration serialConfiguration = this.configurationRepository.getActiveConfiguration(SerialConfiguration.class);
+        SerialConfiguration serialConfiguration = this.configurationRepository.getActiveConfiguration();
         //Default Configuration
         if(serialConfiguration == null) {
             serialConfiguration = new SerialConfiguration() {{

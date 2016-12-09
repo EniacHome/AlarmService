@@ -12,7 +12,7 @@ public interface Repository<T extends Entity> {
 
     void update(T item);
 
-    void remove(T item);
+    void delete(String Id);
 
     T get(String Id);
 

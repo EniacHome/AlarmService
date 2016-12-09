@@ -2,9 +2,15 @@ package com.eniacdevelopment.EniacHome.Binding;
 
 import com.eniacdevelopment.EniacHome.Binding.Factory.LocalConfigurationFactory;
 import com.eniacdevelopment.EniacHome.Configuration.LocalConfiguration;
+import com.eniacdevelopment.EniacHome.DataModel.Configuration.Configuration;
+import com.eniacdevelopment.EniacHome.DataModel.Configuration.SerialConfiguration;
+import com.eniacdevelopment.EniacHome.Repositories.ElasticSearch.ConfigurationRepositoryImpl;
+import com.eniacdevelopment.EniacHome.Repositories.ElasticSearch.SerialConfigurationRepository;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.ConfigurationRepository;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.UserRepository;
 import com.eniacdevelopment.EniacHome.Repositories.ElasticSearch.UserRepositoryImpl;
+import org.glassfish.hk2.api.TypeLiteral;
+import org.glassfish.hk2.utilities.BuilderHelper;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 
 import javax.inject.Singleton;
@@ -23,6 +29,6 @@ public class MainBinder extends AbstractBinder {
         bindFactory(LocalConfigurationFactory.class).to(LocalConfiguration.class);
 
         bind(UserRepositoryImpl.class).to(UserRepository.class);
-        bindAsContract(ConfigurationRepository.class).in(Singleton.class);
+        bind(SerialConfigurationRepository.class).to(new TypeLiteral<ConfigurationRepository<SerialConfiguration>>() {});
     }
 }

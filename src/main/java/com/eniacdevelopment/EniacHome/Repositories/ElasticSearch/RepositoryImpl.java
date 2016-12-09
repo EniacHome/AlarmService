@@ -15,16 +15,17 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.search.SearchHit;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
  * Created by larsg on 12/9/2016.
  */
-public class RepositoryImpl<T extends Entity> implements Repository<T> {
+public abstract class RepositoryImpl<T extends Entity> implements Repository<T> {
 
-    private final TransportClient transportClient;
-    private final ObjectMapper objectMapper;
+    protected final TransportClient transportClient;
+    protected final ObjectMapper objectMapper;
     protected final String index;
     protected final Class<T> type;
 
@@ -112,13 +113,13 @@ public class RepositoryImpl<T extends Entity> implements Repository<T> {
     }
 
     @Override
-    public void remove(T item) {
+    public void delete(String id) {
         DeleteResponse deleteResponse = null;
         try {
             deleteResponse = this.transportClient.prepareDelete()
                     .setIndex(this.index)
                     .setType(this.type.getName())
-                    .setId(item.Id)
+                    .setId(id)
                     .execute()
                     .get();
         } catch (InterruptedException | ExecutionException e) {
@@ -155,15 +156,15 @@ public class RepositoryImpl<T extends Entity> implements Repository<T> {
         SearchResponse searchResponse = null;
         try {
             searchResponse = this.transportClient.prepareSearch()
-                    .setIndices("configuration")
-                    .setTypes(type.getName())
+                    .setIndices(this.index)
+                    .setTypes(this.type.getName())
                     .execute()
                     .get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
-        List<T> items = null;
+        List<T> items = new ArrayList<>();
         for(SearchHit searchHit : searchResponse.getHits()){
             T item = null;
             try {
