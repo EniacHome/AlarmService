@@ -1,7 +1,7 @@
 package com.eniacdevelopment.EniacHome.Serial;
 
 import com.eniacdevelopment.EniacHome.DataModel.Configuration.SerialConfiguration;
-import com.eniacdevelopment.EniacHome.Repositories.ConfigurationRepository;
+import com.eniacdevelopment.EniacHome.Repositories.Shared.ConfigurationRepository;
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortEvent;
 import com.fazecast.jSerialComm.SerialPortPacketListener;

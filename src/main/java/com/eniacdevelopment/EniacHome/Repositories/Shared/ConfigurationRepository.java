@@ -1,4 +1,4 @@
-package com.eniacdevelopment.EniacHome.Repositories;
+package com.eniacdevelopment.EniacHome.Repositories.Shared;
 
 import com.eniacdevelopment.EniacHome.DataModel.Configuration.Configuration;
 import com.fasterxml.jackson.core.JsonProcessingException;

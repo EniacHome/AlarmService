@@ -1,7 +1,7 @@
 package com.eniacdevelopment.EniacHome.Resources;
 
 import com.eniacdevelopment.EniacHome.DataModel.Configuration.SerialConfiguration;
-import com.eniacdevelopment.EniacHome.Repositories.ConfigurationRepository;
+import com.eniacdevelopment.EniacHome.Repositories.Shared.ConfigurationRepository;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
