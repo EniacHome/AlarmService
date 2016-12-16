@@ -11,6 +11,8 @@ import com.eniacdevelopment.EniacHome.Repositories.Shared.ConfigurationRepositor
 import com.eniacdevelopment.EniacHome.Repositories.Shared.TokenRepository;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.UserRepository;
 import com.eniacdevelopment.EniacHome.Repositories.ElasticSearch.UserRepositoryImpl;
+import com.eniacdevelopment.EniacHome.Repositories.Shared.Utils.TokenUtils;
+import com.eniacdevelopment.EniacHome.Repositories.Shared.Utils.UserUtils;
 import org.glassfish.hk2.api.TypeLiteral;
 import org.glassfish.hk2.utilities.BuilderHelper;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
@@ -32,6 +34,8 @@ public class MainBinder extends AbstractBinder {
 
         bind(UserRepositoryImpl.class).to(UserRepository.class);
         bind(TokenRepositoryImpl.class).to(TokenRepository.class);
+        bind(TokenUtils.class).to(TokenUtils.class);
+        bind(UserUtils.class).to(UserUtils.class);
         bind(SerialConfigurationRepository.class).to(new TypeLiteral<ConfigurationRepository<SerialConfiguration>>() {});
     }
 }
