@@ -6,6 +6,7 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -36,7 +37,7 @@ public class TokenUtils {
         if(dbToken == null) {
             return false; // If no token supplied from db
         }
-        if(token != dbToken.Token){
+        if(!Objects.equals(token, dbToken.Token)) {
             return false; // If the token strings do not match
         }
         if(dbToken.ExpiryDate.before(new Date())){

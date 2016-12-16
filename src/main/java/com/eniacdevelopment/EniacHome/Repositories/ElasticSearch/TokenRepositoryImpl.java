@@ -2,6 +2,7 @@ package com.eniacdevelopment.EniacHome.Repositories.ElasticSearch;
 
 import com.eniacdevelopment.EniacHome.DataModel.User.Token;
 import com.eniacdevelopment.EniacHome.DataModel.User.User;
+import com.eniacdevelopment.EniacHome.Repositories.Shared.Objects.TokenAuthenticationResult;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.TokenRepository;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.Utils.TokenUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,15 +33,22 @@ public class TokenRepositoryImpl extends RepositoryImpl<Token> implements TokenR
     }
 
     @Override
-    public Boolean AuthenticateToken(String token) {
-        QueryBuilder query = QueryBuilders.termQuery("Token", token);
+    public TokenAuthenticationResult authenticateToken(String token) {
+        QueryBuilder query = QueryBuilders.matchQuery("Token", token);
 
         List<Token> tokens = this.search(query);
         if(tokens.size() < 1) {
-            return false;
+            return new TokenAuthenticationResult(){{
+                Authenticated = false;
+                UserId = null;
+            }};
         }
-        Token dbToken = tokens.get(0);
+        final Token dbToken = tokens.get(0);
 
-        return this.tokenUtils.AuthenticateToken(token, dbToken);
+        final Boolean authenticated = this.tokenUtils.AuthenticateToken(token, dbToken);
+        return new TokenAuthenticationResult(){{
+            Authenticated = authenticated;
+            UserId = dbToken.Id;
+        }};
     }
 }

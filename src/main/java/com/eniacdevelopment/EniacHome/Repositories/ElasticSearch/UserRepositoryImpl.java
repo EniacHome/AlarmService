@@ -2,6 +2,7 @@ package com.eniacdevelopment.EniacHome.Repositories.ElasticSearch;
 
 import com.eniacdevelopment.EniacHome.DataModel.User.Credentials;
 import com.eniacdevelopment.EniacHome.DataModel.User.User;
+import com.eniacdevelopment.EniacHome.Repositories.Shared.Objects.UserAuthenticationResult;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.UserRepository;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.Utils.UserUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,15 +26,22 @@ public class UserRepositoryImpl extends RepositoryImpl<User> implements UserRepo
     }
 
     @Override
-    public Boolean AuthenticateUser(Credentials credentials) {
-        QueryBuilder query = QueryBuilders.termQuery("Username",credentials.Username);
+    public UserAuthenticationResult AuthenticateUser(Credentials credentials) {
+        QueryBuilder query = QueryBuilders.matchQuery("Username",credentials.Username);
 
         List<User> users = this.search(query);
         if(users.size() < 1) {
-            return false;
+            return new UserAuthenticationResult(){{
+                Authenticated = false;
+                UserId = null;
+            }};
         }
-        User user = users.get(0);
+        final User user = users.get(0);
 
-        return this.userUtils.AuthenticateUser(credentials, user);
+        final Boolean authenticated = this.userUtils.AuthenticateUser(credentials, user);
+        return new UserAuthenticationResult(){{
+            Authenticated = authenticated;
+            UserId = user.Id;
+        }};
     }
 }
