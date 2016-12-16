@@ -11,6 +11,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,5 +51,11 @@ public class TokenRepositoryImpl extends RepositoryImpl<Token> implements TokenR
             Authenticated = authenticated;
             UserId = dbToken.Id;
         }};
+    }
+
+    @Override
+    public void updateToken(final String userId) {
+        Token token = this.tokenUtils.updateToken(userId);
+        this.update(token);
     }
 }

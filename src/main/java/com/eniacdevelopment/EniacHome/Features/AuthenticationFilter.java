@@ -46,8 +46,11 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
         User user = this.userRepository.get(result.UserId);
         if(user == null){
+            this.tokenRepository.delete(result.UserId); /*The token is no longer valid, get rid of it*/
             return; /*If DynamicRoles is hit and no user is supplied it will return unauthorized */
         }
+
+        this.tokenRepository.updateToken(result.UserId);
         containerRequestContext.setSecurityContext(new SecurityContextImpl(containerRequestContext.getSecurityContext(), user));
     }
 

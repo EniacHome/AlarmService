@@ -9,4 +9,5 @@ import com.eniacdevelopment.EniacHome.Repositories.Shared.Objects.TokenAuthentic
 public interface TokenRepository extends Repository<Token> {
     String issueToken(String userId);
     TokenAuthenticationResult authenticateToken(String token);
+    void updateToken(String userId);
 }

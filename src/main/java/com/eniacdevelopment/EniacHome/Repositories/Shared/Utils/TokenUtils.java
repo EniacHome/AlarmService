@@ -16,23 +16,6 @@ public class TokenUtils {
     private final long ONE_MINUTE_IN_MILLISECONDS = 60000;
     private final long MINUTES = 10;
 
-    public Token issueToken(final String userId){
-        // Get Token
-        Random random = new SecureRandom();
-        final String tokenString = new BigInteger(130, random).toString(32);
-
-        // Get Expiry Date
-        Calendar currentDate = Calendar.getInstance();
-        long curentMilliSeconds = currentDate.getTimeInMillis();
-        final Date expiryDate = new Date(curentMilliSeconds + (MINUTES * ONE_MINUTE_IN_MILLISECONDS));
-
-        return new Token(){{
-            Id = userId;
-            ExpiryDate = expiryDate;
-            Token = tokenString;
-        }} ;
-    }
-
     public Boolean AuthenticateToken(String token, Token dbToken) {
         if(dbToken == null) {
             return false; // If no token supplied from db
@@ -45,5 +28,32 @@ public class TokenUtils {
         }
 
         return true;
+    }
+
+    public Token issueToken(final String userId){
+        // Get Token
+        Random random = new SecureRandom();
+        final String tokenString = new BigInteger(130, random).toString(32);
+        final Date expiryDate = this.newExpiryDate();
+
+        return new Token(){{
+            Id = userId;
+            ExpiryDate = expiryDate;
+            Token = tokenString;
+        }} ;
+    }
+
+    public Token updateToken(final String userId){
+        final Date expiryDate = this.newExpiryDate();
+        return new Token(){{
+            Id = userId;
+            ExpiryDate = expiryDate;
+        }};
+    }
+
+    private Date newExpiryDate(){
+        Calendar currentDate = Calendar.getInstance();
+        long curentMilliSeconds = currentDate.getTimeInMillis();
+        return new Date(curentMilliSeconds + (MINUTES * ONE_MINUTE_IN_MILLISECONDS));
     }
 }
