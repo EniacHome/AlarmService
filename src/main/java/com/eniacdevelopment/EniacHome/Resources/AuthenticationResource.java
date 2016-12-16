@@ -38,7 +38,7 @@ public class AuthenticationResource {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
 
-        Token token = this.tokenRepository.issueToken(credentials.Username);
+        String token = this.tokenRepository.issueToken(credentials.Username);
 
         return Response.ok(token).build();
     }

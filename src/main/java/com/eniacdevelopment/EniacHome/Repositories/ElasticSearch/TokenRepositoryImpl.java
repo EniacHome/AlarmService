@@ -21,10 +21,10 @@ public class TokenRepositoryImpl extends RepositoryImpl<Token> implements TokenR
     }
 
     @Override
-    public Token issueToken(String userId) {
+    public String issueToken(String userId) {
         Token token = this.tokenUtils.issueToken(userId);
         this.add(token); /*If already exists; overwrite. ES specific!*/
-        return token;
+        return token.Token;
     }
 
     @Override
