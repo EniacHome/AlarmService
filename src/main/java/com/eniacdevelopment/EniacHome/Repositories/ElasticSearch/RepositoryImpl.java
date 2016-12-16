@@ -2,8 +2,10 @@ package com.eniacdevelopment.EniacHome.Repositories.ElasticSearch;
 
 import com.eniacdevelopment.EniacHome.DataModel.Entity;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.Repository;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteResponse;
@@ -92,7 +94,7 @@ public abstract class RepositoryImpl<T extends Entity> implements Repository<T> 
     public void update(T item) {
         byte[] jsonItem;
         try {
-            jsonItem = this.objectMapper.writeValueAsBytes(item);
+            jsonItem = this.objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL).writeValueAsBytes(item);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return;
