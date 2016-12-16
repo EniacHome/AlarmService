@@ -3,6 +3,7 @@ package com.eniacdevelopment.EniacHome.Resources;
 import com.eniacdevelopment.EniacHome.DataModel.User.User;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.UserRepository;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
@@ -14,6 +15,7 @@ public class UserResource {
 
     private final UserRepository userRepository;
 
+    @Inject
     public UserResource(UserRepository userRepository){
         this.userRepository = userRepository;
     }

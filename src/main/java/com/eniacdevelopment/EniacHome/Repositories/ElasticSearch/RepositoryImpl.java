@@ -12,6 +12,7 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
 
 import java.io.IOException;
@@ -158,6 +159,34 @@ public abstract class RepositoryImpl<T extends Entity> implements Repository<T> 
             searchResponse = this.transportClient.prepareSearch()
                     .setIndices(this.index)
                     .setTypes(this.type.getName())
+                    .execute()
+                    .get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        List<T> items = new ArrayList<>();
+        for(SearchHit searchHit : searchResponse.getHits()){
+            T item = null;
+            try {
+                item = this.objectMapper.readValue(searchHit.getSourceRef().toBytes(), type);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if(item != null) {
+                items.add(item);
+            }
+        }
+        return items;
+    }
+
+    public List<T> search(QueryBuilder query){
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = this.transportClient.prepareSearch()
+                    .setIndices(this.index)
+                    .setTypes(this.type.getName())
+                    .setQuery(query)
                     .execute()
                     .get();
         } catch (InterruptedException | ExecutionException e) {
