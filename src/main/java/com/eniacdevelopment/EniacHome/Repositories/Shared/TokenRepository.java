@@ -7,5 +7,5 @@ import com.eniacdevelopment.EniacHome.DataModel.User.Token;
  */
 public interface TokenRepository extends Repository<Token> {
     String issueToken(String userId);
-    Boolean AuthenticateToken(Token token);
+    Boolean AuthenticateToken(String token);
 }

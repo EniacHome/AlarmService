@@ -32,11 +32,11 @@ public class TokenUtils {
         }} ;
     }
 
-    public Boolean AuthenticateToken(Token token, Token dbToken) {
+    public Boolean AuthenticateToken(String token, Token dbToken) {
         if(dbToken == null) {
             return false; // If no token supplied from db
         }
-        if(token.Token != dbToken.Token){
+        if(token != dbToken.Token){
             return false; // If the token strings do not match
         }
         if(dbToken.ExpiryDate.before(new Date())){
