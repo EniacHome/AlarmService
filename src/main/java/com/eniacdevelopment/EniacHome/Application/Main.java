@@ -1,12 +1,18 @@
 package com.eniacdevelopment.EniacHome.Application;
 
 import com.eniacdevelopment.EniacHome.Binding.MainBinder;
+import com.eniacdevelopment.EniacHome.Features.AuthenticationFilter;
 import com.eniacdevelopment.EniacHome.Features.ImmediateFeature;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.grizzly.utils.Exceptions;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
 import java.io.IOException;
 import java.net.URI;
 
@@ -28,8 +34,18 @@ public class Main {
         final ResourceConfig resourceConfig = new ResourceConfig()
                 .packages("com.eniacdevelopment.EniacHome.Resources")
                 .register(ImmediateFeature.class)
+                .register(AuthenticationFilter.class)
+                .register(RolesAllowedDynamicFeature.class)
                 .register(new MainBinder())
                 .register(JacksonJsonProvider.class);
+//                .register(new ExceptionMapper<Exception>() {
+//                    @Override
+//                    public Response toResponse(Exception e) {
+//                        e.printStackTrace();
+//                        return Response.status(500).entity(Exceptions.getStackTraceAsString(e)).type("text/plain")
+//                                .build();
+//                    }
+//                });
 
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
