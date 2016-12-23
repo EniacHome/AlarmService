@@ -1,22 +1,21 @@
 package com.eniacdevelopment.EniacHome.Resources;
 
 import com.eniacdevelopment.EniacHome.DataModel.Configuration.SerialConfiguration;
-import com.eniacdevelopment.EniacHome.Repositories.ConfigurationRepository;
+import com.eniacdevelopment.EniacHome.Repositories.Shared.ConfigurationRepository;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
 
 /**
  * Created by larsg on 11/16/2016.
  */
 @Path("/configuration")
 public class ConfigurationResource {
-    private final ConfigurationRepository configurationRepository;
+    private final ConfigurationRepository<SerialConfiguration> configurationRepository;
 
     @Inject
-    public ConfigurationResource(ConfigurationRepository configurationRepository){
+    public ConfigurationResource(ConfigurationRepository<SerialConfiguration> configurationRepository){
         this.configurationRepository = configurationRepository;
     }
 
@@ -28,8 +27,8 @@ public class ConfigurationResource {
     @GET
     @Path("/serial")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<SerialConfiguration> getSerialConfigurations(){
-        return this.configurationRepository.getConfigurations(SerialConfiguration.class);
+    public Iterable<SerialConfiguration> getSerialConfigurations(){
+        return this.configurationRepository.getAll();
     }
 
     /**
@@ -41,7 +40,7 @@ public class ConfigurationResource {
     @Path("/serial/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public SerialConfiguration getSerialConfiguration(@PathParam("id") String id){
-        return this.configurationRepository.getConfiguration(SerialConfiguration.class, id);
+        return this.configurationRepository.get(id);
     }
 
     /**
@@ -52,28 +51,39 @@ public class ConfigurationResource {
     @Path("/serial/active")
     @Produces(MediaType.APPLICATION_JSON)
     public SerialConfiguration getActiveSerialConfiguration(){
-        return this.configurationRepository.getActiveConfiguration(SerialConfiguration.class);
+        return this.configurationRepository.getActiveConfiguration();
     }
 
     /**
-     * POSTs a single configuration to the repository.
+     * POSTs a single configuration to the repository. Create mode.
      * @param serialConfiguration The configuration to post.
      */
     @POST
     @Path("/serial")
     @Consumes(MediaType.APPLICATION_JSON)
     public void postSerialConfiguration(SerialConfiguration serialConfiguration){
-        this.configurationRepository.setConfiguration(serialConfiguration);
+        this.configurationRepository.add(serialConfiguration);
     }
 
     /**
-     * DELETEs a single configuration from the repository.
+     * PUTs a single configuration to the repository. Update mode.
+     * @param serialConfiguration The configuration to update
+     */
+    @PUT
+    @Path("/serial")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void putSerialConfiguration(SerialConfiguration serialConfiguration){
+        this.configurationRepository.update(serialConfiguration);
+    }
+
+    /**
+     * DELETEs a single configuration from the repository. Delete mode.
      * @param id Id to match.
      */
     @DELETE
     @Path("/serial/{id}")
     public void deleteSerialConfiguration(@PathParam("id") String id) {
-        this.configurationRepository.deleteConfiguration(SerialConfiguration.class, id);
+        this.configurationRepository.delete(id);
     }
     //endregion
 }

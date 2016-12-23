@@ -50,9 +50,24 @@ public class ConfigurationResourceTest {
     }
 
     @Test
+    public void updateIt(){
+        SerialConfiguration config = new SerialConfiguration(){{
+            Id = "CONFIG";
+            Active = true;
+            BaudRate = 9600;
+            DataBits = 9;
+            Parity = 1;
+            StopBits = 2;
+            PortDescriptor = "COM2";
+        }};
+
+        Response response = target.path("configuration").path("serial").request().put(Entity.json(config));
+    }
+
+    @Test
     public void getIt() {
-        SerialConfiguration response = target.path("configuration").path("serial").path("TESTCONFIG").request().get(SerialConfiguration.class);
-        assertEquals("Something", response.PortDescriptor);
+        SerialConfiguration response = target.path("configuration").path("serial").path("CONFIG").request().get(SerialConfiguration.class);
+        assertEquals("COM3", response.PortDescriptor);
     }
 
     @Test
@@ -63,12 +78,12 @@ public class ConfigurationResourceTest {
 
     @Test
     public void getAll() {
-        List<SerialConfiguration> response = target.path("configuration").path("serial").request().get(new GenericType<List<SerialConfiguration>>(){});
-        assertTrue(response.size() > 0);
+        Iterable<SerialConfiguration> response = target.path("configuration").path("serial").request().get(new GenericType<Iterable<SerialConfiguration>>(){});
+        assertTrue(response != null);
     }
 
     @Test
     public void deleteIt(){
-        Response response = target.path("configuration").path("serial").path("TESTCONFIG").request().delete();
+        Response response = target.path("configuration").path("serial").path("CONFIG").request().delete();
     }
 }
