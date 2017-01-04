@@ -1,9 +1,9 @@
 package com.eniacdevelopment.EniacHome;
 
 import com.eniacdevelopment.EniacHome.Application.Main;
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.media.sse.SseFeature;
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
