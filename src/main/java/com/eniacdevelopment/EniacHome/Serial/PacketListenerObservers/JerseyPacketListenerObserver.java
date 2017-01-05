@@ -1,7 +1,6 @@
 package com.eniacdevelopment.EniacHome.Serial.PacketListenerObservers;
 
-import com.eniacdevelopment.EniacHome.Serial.PacketListenerObserver;
-import com.eniacdevelopment.EniacHome.Serial.SerialNotification;
+import com.eniacdevelopment.EniacHome.Serial.Objects.SerialNotification;
 import org.glassfish.jersey.media.sse.OutboundEvent;
 import org.glassfish.jersey.media.sse.SseBroadcaster;
 
@@ -21,6 +20,8 @@ public class JerseyPacketListenerObserver extends PacketListenerObserver {
 
     @Override
     public void eventNotify(SerialNotification serialNotification) {
+
+
         OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
         OutboundEvent event = eventBuilder.name("SerialNotification")
                 .mediaType(MediaType.APPLICATION_JSON_TYPE)
