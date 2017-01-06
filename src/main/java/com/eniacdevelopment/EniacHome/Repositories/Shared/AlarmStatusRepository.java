@@ -1,6 +1,6 @@
 package com.eniacdevelopment.EniacHome.Repositories.Shared;
 
-import com.eniacdevelopment.EniacHome.DataModel.AlarmStatus;
+import com.eniacdevelopment.EniacHome.DataModel.Alarm.AlarmStatus;
 
 /**
  * Created by larsg on 1/6/2017.
