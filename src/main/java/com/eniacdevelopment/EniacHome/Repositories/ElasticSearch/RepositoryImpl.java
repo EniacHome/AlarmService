@@ -5,7 +5,6 @@ import com.eniacdevelopment.EniacHome.Repositories.Shared.Repository;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteResponse;
@@ -142,6 +141,7 @@ public abstract class RepositoryImpl<T extends Entity> implements Repository<T> 
                     .get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
+            return null;
         }
 
         byte[] jsonItem = getResponse.getSourceAsBytes();
@@ -150,6 +150,7 @@ public abstract class RepositoryImpl<T extends Entity> implements Repository<T> 
             item = this.objectMapper.readValue(jsonItem, this.type);
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
         return item;
     }
@@ -165,6 +166,7 @@ public abstract class RepositoryImpl<T extends Entity> implements Repository<T> 
                     .get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
+            return null;
         }
 
         List<T> items = new ArrayList<>();
@@ -174,6 +176,7 @@ public abstract class RepositoryImpl<T extends Entity> implements Repository<T> 
                 item = this.objectMapper.readValue(searchHit.getSourceRef().toBytes(), type);
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
             if(item != null) {
                 items.add(item);

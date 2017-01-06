@@ -1,8 +1,12 @@
 package com.eniacdevelopment.EniacHome.Serial;
 
 import com.eniacdevelopment.EniacHome.DataModel.Configuration.SerialConfiguration;
-import com.eniacdevelopment.EniacHome.Repositories.ElasticSearch.ConfigurationRepositoryImpl;
+import com.eniacdevelopment.EniacHome.DataModel.Sensor.SensorStatus;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.ConfigurationRepository;
+import com.eniacdevelopment.EniacHome.Repositories.Shared.SensorStatusRepository;
+import com.eniacdevelopment.EniacHome.Serial.Objects.SensorNotification;
+import com.eniacdevelopment.EniacHome.Serial.PacketListenerObservers.PacketListenerObserver;
+import com.eniacdevelopment.EniacHome.Serial.PacketParsers.PacketParser;
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortEvent;
 import com.fazecast.jSerialComm.SerialPortPacketListener;
@@ -21,12 +25,15 @@ public class SerialSubject implements SerialPortPacketListener {
             Collections.synchronizedList(new ArrayList<PacketListenerObserver>());
 
     private final ConfigurationRepository<SerialConfiguration> configurationRepository;
+    private final SensorStatusRepository sensorStatusRepository;
+    private final PacketParser packetParser;
     private SerialPort serialPortInstance;
 
     @Inject
-    public SerialSubject(ConfigurationRepository<SerialConfiguration> configurationRepository){
+    public SerialSubject(ConfigurationRepository<SerialConfiguration> configurationRepository, SensorStatusRepository sensorStatusRepository, PacketParser packetParser) {
         this.configurationRepository = configurationRepository;
-        this.initializeSerial();
+        this.sensorStatusRepository = sensorStatusRepository;
+        this.packetParser = packetParser;
     }
 
     public void addObserver(PacketListenerObserver packetListenerObserver) {
@@ -44,7 +51,7 @@ public class SerialSubject implements SerialPortPacketListener {
                 DataBits = 8;
                 Parity = 0;
                 StopBits = 1;
-                PortDescriptor = "COM1";
+                PortDescriptor = "COM3";
             }};
         }
 
@@ -63,7 +70,7 @@ public class SerialSubject implements SerialPortPacketListener {
 
     @Override
     public int getPacketSize() {
-        return 13;
+        return 2;
     }
 
     @Override
@@ -74,15 +81,20 @@ public class SerialSubject implements SerialPortPacketListener {
     @Override
     public void serialEvent(SerialPortEvent serialPortEvent) {
         byte[] packet = serialPortEvent.getReceivedData();
-        System.out.println(new String(packet));
 
-        // Create SerialNotification for all observers
-        SerialNotification notification = new SerialNotification();
-        notification.Id = Byte.toString(packet[0]);
+        // Create SensorNotification for all observers
+        SensorNotification notification = this.packetParser.parse(packet, serialPortEvent);
+
+        SensorStatus sensorStatus = new SensorStatus() {{
+            Value = notification.Value;
+            Date = notification.Date;
+            Alarmed = false; //TODO calculate Alarmed
+        }};
+        this.sensorStatusRepository.put(notification.Id, sensorStatus);
 
         synchronized (this.packetListenerObservers) {
             for (PacketListenerObserver observer : this.packetListenerObservers) {
-                observer.eventNotify(notification);
+                observer.eventNotify(notification.Id);
             }
         }
     }

@@ -4,6 +4,7 @@ import com.eniacdevelopment.EniacHome.Configuration.LocalConfiguration;
 import com.eniacdevelopment.EniacHome.Configuration.PacketListenerObserverConfiguration;
 import com.eniacdevelopment.EniacHome.Configuration.TransportClientConfiguration;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -28,7 +29,7 @@ public class StubLocalMain {
 
             packetListenerObserverConfiguration = new PacketListenerObserverConfiguration(){{
                 PacketListenerObservers = new HashMap<String, Boolean>() {{
-                    put("com.eniacdevelopment.EniacHome.Serial.PacketListenerObservers.ESPacketListenerObserver", false);
+                    put("com.eniacdevelopment.EniacHome.Serial.PacketListenerObservers.SensorEventPacketListenerObserver", false);
                     put("com.eniacdevelopment.EniacHome.Serial.PacketListenerObservers.JerseyPacketListenerObserver", true);
                 }};
             }};

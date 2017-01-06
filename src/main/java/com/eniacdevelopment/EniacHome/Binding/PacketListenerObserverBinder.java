@@ -1,7 +1,7 @@
 package com.eniacdevelopment.EniacHome.Binding;
 
-import com.eniacdevelopment.EniacHome.Serial.PacketListenerObservers.ESPacketListenerObserver;
 import com.eniacdevelopment.EniacHome.Serial.PacketListenerObservers.JerseyPacketListenerObserver;
+import com.eniacdevelopment.EniacHome.Serial.PacketListenerObservers.SensorEventPacketListenerObserver;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 
 /**
@@ -10,7 +10,7 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
 public class PacketListenerObserverBinder extends AbstractBinder {
     @Override
     protected void configure() {
-        bind(ESPacketListenerObserver.class).to(ESPacketListenerObserver.class);
+        bind(SensorEventPacketListenerObserver.class).to(SensorEventPacketListenerObserver.class);
         bind(JerseyPacketListenerObserver.class).to(JerseyPacketListenerObserver.class);
     }
 }

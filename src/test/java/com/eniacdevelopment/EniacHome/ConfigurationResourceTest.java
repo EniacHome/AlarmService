@@ -1,18 +1,15 @@
 package com.eniacdevelopment.EniacHome;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.Response;
-
 import com.eniacdevelopment.EniacHome.DataModel.Configuration.SerialConfiguration;
 import org.glassfish.grizzly.http.server.HttpServer;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.Response;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -58,7 +55,7 @@ public class ConfigurationResourceTest {
             DataBits = 9;
             Parity = 1;
             StopBits = 2;
-            PortDescriptor = "COM2";
+            PortDescriptor = "COM3";
         }};
 
         Response response = target.path("configuration").path("serial").request().put(Entity.json(config));

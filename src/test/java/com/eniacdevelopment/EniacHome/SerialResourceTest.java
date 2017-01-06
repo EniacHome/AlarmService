@@ -1,6 +1,6 @@
 package com.eniacdevelopment.EniacHome;
 
-import com.eniacdevelopment.EniacHome.Serial.SerialNotification;
+import com.eniacdevelopment.EniacHome.Serial.Objects.SensorNotification;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.media.sse.EventListener;
 import org.glassfish.jersey.media.sse.EventSource;
@@ -10,9 +10,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.validation.constraints.AssertTrue;
 import javax.ws.rs.client.WebTarget;
-import java.util.List;
 
 /**
  * Created by larsg on 11/26/2016.
@@ -36,13 +34,13 @@ public class SerialResourceTest {
     @Test
     public void getSerialEvents(){
         EventSource eventSource = EventSource.target(target.path("serial")).build();
-        final SerialNotification[] serialNotification = new SerialNotification[1];
+        final SensorNotification[] serialNotification = new SensorNotification[1];
         final Boolean[] shouldContinue = {false};
 
         EventListener listener = new EventListener() {
             @Override
             public void onEvent(InboundEvent inboundEvent) {
-                SerialNotification not = inboundEvent.readData(SerialNotification.class);
+                SensorNotification not = inboundEvent.readData(SensorNotification.class);
                 System.out.println(inboundEvent.getName() + ": " + not.Id);
                 serialNotification[0] = not;
                 shouldContinue[0] = true;

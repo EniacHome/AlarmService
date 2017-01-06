@@ -2,14 +2,13 @@ package com.eniacdevelopment.EniacHome.Binding.Factory;
 
 import com.eniacdevelopment.EniacHome.Configuration.LocalConfiguration;
 import com.eniacdevelopment.EniacHome.Configuration.PacketListenerObserverConfiguration;
-import com.eniacdevelopment.EniacHome.Serial.PacketListenerObserver;
+import com.eniacdevelopment.EniacHome.Serial.PacketListenerObservers.PacketListenerObserver;
 import com.eniacdevelopment.EniacHome.Serial.SerialSubject;
 import org.glassfish.hk2.api.Factory;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.reflections.Reflections;
 
 import javax.inject.Inject;
-import java.util.Properties;
 import java.util.Set;
 
 /**

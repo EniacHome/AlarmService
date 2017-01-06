@@ -7,14 +7,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.management.relation.Role;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.GenericType;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by larsg on 12/9/2016.
@@ -35,14 +35,13 @@ public class UserResourceTest {
     }
 
     @Test
-    public void hitIT(){
-        Response rs = target.path("authentication").request().get();
-
-        int x = 5;
+    public void getUsers(){
+        Iterable<User> response = target.path("user").request().get(new GenericType<Iterable<User>>(){});
+        assertTrue(response != null);
     }
 
     @Test
-    public void updateUser(){
+    public void addUser(){
 
         final List<UserRole> roleSet = new ArrayList<UserRole>(){{
             add(UserRole.Admin);
@@ -58,32 +57,33 @@ public class UserResourceTest {
             Roles = roleSet;
         }};
 
-        this.target.path("user").request().put(Entity.json(user));
-    }
-
-    @Test
-    public void addUser(){
-
-        final List<UserRole> roleSet = new ArrayList<UserRole>(){{
-            add(UserRole.Admin);
-            add(UserRole.User);
-        }};
-
-        User user = new User(){{
-            Id = "lg1";
-            Username = "Lars";
-            Firstname = "Lars";
-            Lastname = "Gardien";
-            PasswordHash = "Password";
-            Roles = roleSet;
-        }};
-
         this.target.path("user").request().post(Entity.json(user));
     }
 
     @Test
+    public void getUser(){
+        User response = target.path("user").path("lg").request().get(User.class);
+        assertEquals("lg", response.Id);
+    }
+
+    @Test
+    public void updateUser(){
+
+        final List<UserRole> roleSet = new ArrayList<UserRole>(){{
+            add(UserRole.User);
+        }};
+
+        User user = new User(){{
+            Id = "lg";
+            Username = "LarsjeParsje";
+        }};
+
+        this.target.path("user").request().put(Entity.json(user));
+    }
+
+    @Test
     public void deleteUser(){
-        this.target.path("user").path("lg1").request().delete();
+        this.target.path("user").path("lg").request().delete();
     }
 
 }
