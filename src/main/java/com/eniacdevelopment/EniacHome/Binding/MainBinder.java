@@ -25,6 +25,7 @@ public class MainBinder extends AbstractBinder {
         install(new PacketListenerObserverBinder());
         install(new SerialBinder());
         install(new SensorBinder());
+        install(new AlarmBinder());
 
         bindFactory(LocalConfigurationFactory.class).to(LocalConfiguration.class);
 
