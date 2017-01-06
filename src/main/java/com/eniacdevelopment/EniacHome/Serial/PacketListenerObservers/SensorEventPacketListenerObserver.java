@@ -2,8 +2,9 @@
 package com.eniacdevelopment.EniacHome.Serial.PacketListenerObservers;
 
 import com.eniacdevelopment.EniacHome.DataModel.Sensor.SensorEvent;
+import com.eniacdevelopment.EniacHome.DataModel.Sensor.SensorStatus;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.SensorEventRepository;
-import com.eniacdevelopment.EniacHome.Serial.Objects.SensorNotification;
+import com.eniacdevelopment.EniacHome.Repositories.Shared.SensorStatusRepository;
 
 import javax.inject.Inject;
 
@@ -13,18 +14,23 @@ import javax.inject.Inject;
 public class SensorEventPacketListenerObserver extends PacketListenerObserver {
 
     private final SensorEventRepository sensorEventRepository;
+    private final SensorStatusRepository sensorStatusRepository;
 
     @Inject
-    public SensorEventPacketListenerObserver(SensorEventRepository sensorEventRepository) {
+    public SensorEventPacketListenerObserver(SensorEventRepository sensorEventRepository, SensorStatusRepository sensorStatusRepository) {
         this.sensorEventRepository = sensorEventRepository;
+        this.sensorStatusRepository = sensorStatusRepository;
     }
 
     @Override
-    public void eventNotify(SensorNotification sensorNotification) {
+    public void eventNotify(String sensorId) {
+        SensorStatus sensorStatus = this.sensorStatusRepository.get(sensorId);
+
         SensorEvent sensorEvent = new SensorEvent() {{
-            Id = sensorNotification.Id;
-            Value = sensorNotification.Value;
-            Date = sensorNotification.date;
+            SensorId = sensorId;
+            Value = sensorStatus.Value;
+            Date = sensorStatus.Date;
+            Alarmed = sensorStatus.Alarmed;
         }};
 
         this.sensorEventRepository.add(sensorEvent);

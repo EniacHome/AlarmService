@@ -1,9 +1,7 @@
 package com.eniacdevelopment.EniacHome.Serial.PacketListenerObservers;
 
 import com.eniacdevelopment.EniacHome.DataModel.Sensor.Sensor;
-import com.eniacdevelopment.EniacHome.DataModel.Sensor.SensorInfo;
-import com.eniacdevelopment.EniacHome.Repositories.Shared.SensorInfoRepository;
-import com.eniacdevelopment.EniacHome.Serial.Objects.SensorNotification;
+import com.eniacdevelopment.EniacHome.Repositories.Shared.SensorRepository;
 import org.glassfish.jersey.media.sse.OutboundEvent;
 import org.glassfish.jersey.media.sse.SseBroadcaster;
 
@@ -15,26 +13,20 @@ import javax.ws.rs.core.MediaType;
  */
 public class JerseyPacketListenerObserver extends PacketListenerObserver {
     private final SseBroadcaster broadcaster;
-    private final SensorInfoRepository sensorInfoRepository;
+    private final SensorRepository sensorInfoRepository;
 
     @Inject
-    public JerseyPacketListenerObserver(SseBroadcaster broadcaster, SensorInfoRepository sensorInfoRepository) {
+    public JerseyPacketListenerObserver(SseBroadcaster broadcaster, SensorRepository sensorInfoRepository) {
         this.broadcaster = broadcaster;
         this.sensorInfoRepository = sensorInfoRepository;
     }
 
     @Override
-    public void eventNotify(SensorNotification sensorNotification) {
-        SensorInfo sensorInfo = this.sensorInfoRepository.get(sensorNotification.Id);
+    public void eventNotify(String sensorId) {
+        //Get all SensorInfo from the repository
+        Sensor sensor = this.sensorInfoRepository.get(sensorId);
 
-        Sensor sensor = new Sensor() {{
-            Id = sensorNotification.Id;
-            Name = sensorInfo == null ? null : sensorInfo.Name;
-            SensorType = sensorInfo == null ? null : sensorInfo.SensorType;
-            Value = sensorNotification.Value;
-            Updated = sensorNotification.date;
-        }};
-
+        //Transmit the sensor
         OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
         OutboundEvent event = eventBuilder.name("SensorNotification")
                 .mediaType(MediaType.APPLICATION_JSON_TYPE)

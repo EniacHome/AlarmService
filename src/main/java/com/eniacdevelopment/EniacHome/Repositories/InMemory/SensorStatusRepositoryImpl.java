@@ -22,8 +22,8 @@ public class SensorStatusRepositoryImpl implements SensorStatusRepository {
     }
 
     @Override
-    public void put(SensorStatus item) {
-        this.memory.put(item.Id, item);
+    public void put(String id, SensorStatus item) {
+        this.memory.put(id, item);
     }
 
     @Override

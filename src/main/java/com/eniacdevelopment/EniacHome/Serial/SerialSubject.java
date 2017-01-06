@@ -1,7 +1,9 @@
 package com.eniacdevelopment.EniacHome.Serial;
 
 import com.eniacdevelopment.EniacHome.DataModel.Configuration.SerialConfiguration;
+import com.eniacdevelopment.EniacHome.DataModel.Sensor.SensorStatus;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.ConfigurationRepository;
+import com.eniacdevelopment.EniacHome.Repositories.Shared.SensorStatusRepository;
 import com.eniacdevelopment.EniacHome.Serial.Objects.SensorNotification;
 import com.eniacdevelopment.EniacHome.Serial.PacketListenerObservers.PacketListenerObserver;
 import com.eniacdevelopment.EniacHome.Serial.PacketParsers.PacketParser;
@@ -23,12 +25,14 @@ public class SerialSubject implements SerialPortPacketListener {
             Collections.synchronizedList(new ArrayList<PacketListenerObserver>());
 
     private final ConfigurationRepository<SerialConfiguration> configurationRepository;
+    private final SensorStatusRepository sensorStatusRepository;
     private final PacketParser packetParser;
     private SerialPort serialPortInstance;
 
     @Inject
-    public SerialSubject(ConfigurationRepository<SerialConfiguration> configurationRepository, PacketParser packetParser){
+    public SerialSubject(ConfigurationRepository<SerialConfiguration> configurationRepository, SensorStatusRepository sensorStatusRepository, PacketParser packetParser) {
         this.configurationRepository = configurationRepository;
+        this.sensorStatusRepository = sensorStatusRepository;
         this.packetParser = packetParser;
     }
 
@@ -81,9 +85,16 @@ public class SerialSubject implements SerialPortPacketListener {
         // Create SensorNotification for all observers
         SensorNotification notification = this.packetParser.parse(packet, serialPortEvent);
 
+        SensorStatus sensorStatus = new SensorStatus() {{
+            Value = notification.Value;
+            Date = notification.Date;
+            Alarmed = false; //TODO calculate Alarmed
+        }};
+        this.sensorStatusRepository.put(notification.Id, sensorStatus);
+
         synchronized (this.packetListenerObservers) {
             for (PacketListenerObserver observer : this.packetListenerObservers) {
-                observer.eventNotify(notification);
+                observer.eventNotify(notification.Id);
             }
         }
     }

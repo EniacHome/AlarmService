@@ -25,7 +25,7 @@ public class PacketParserImpl implements PacketParser {
             notification.Value = packet[1];
         }
 
-        notification.date = new Date();
+        notification.Date = new Date();
 
         return notification;
     }

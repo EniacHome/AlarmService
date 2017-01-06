@@ -8,5 +8,5 @@ import java.util.Date;
 public class SensorNotification {
     public String Id;
     public int Value;
-    public Date date;
+    public Date Date;
 }
