@@ -1,15 +1,17 @@
 package com.eniacdevelopment.EniacHome.Serial.PacketParsers;
 
-import com.eniacdevelopment.EniacHome.Serial.Objects.SerialNotification;
+import com.eniacdevelopment.EniacHome.Serial.Objects.SensorNotification;
 import com.fazecast.jSerialComm.SerialPortEvent;
+
+import java.util.Date;
 
 /**
  * Created by larsg on 1/4/2017.
  */
 public class PacketParserImpl implements PacketParser {
     @Override
-    public SerialNotification parse(byte[] packet, SerialPortEvent event) {
-        SerialNotification notification = new SerialNotification();
+    public SensorNotification parse(byte[] packet, SerialPortEvent event) {
+        SensorNotification notification = new SensorNotification();
 
         notification.Id = Integer.toString((packet[0] & 0xFF) >> 1);
         Boolean extended = ((packet[0] & 0xFF) | 1) == 1;
@@ -22,6 +24,8 @@ public class PacketParserImpl implements PacketParser {
         else {
             notification.Value = packet[1];
         }
+
+        notification.date = new Date();
 
         return notification;
     }

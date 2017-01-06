@@ -5,11 +5,10 @@ import com.eniacdevelopment.EniacHome.Repositories.Shared.ConfigurationRepositor
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.Strings;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import javax.inject.Inject;
-import java.util.concurrent.ExecutionException;
+import java.io.IOException;
 
 /**
  * Created by larsg on 11/17/2016.
@@ -22,7 +21,7 @@ public class ConfigurationRepositoryImpl<TConfiguration extends Configuration> e
     }
 
     public TConfiguration getActiveConfiguration(){
-        SearchResponse searchResponse = null;
+        SearchResponse searchResponse;
         try {
             searchResponse = this.transportClient.prepareSearch()
                     .setIndices("configuration")
@@ -30,17 +29,18 @@ public class ConfigurationRepositoryImpl<TConfiguration extends Configuration> e
                     .setQuery(QueryBuilders.termQuery("Active", true))
                     .execute()
                     .get();
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        String id = searchResponse.getHits().getAt(0).id();
-        if(Strings.isNullOrEmpty(id))
-        {
             return null;
         }
 
-        return get(id);
+        byte[] jsonItem = searchResponse.getHits().getAt(0).getSourceRef().toBytes();
+        TConfiguration item = null;
+        try {
+            item = this.objectMapper.readValue(jsonItem, this.type);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return item;
     }
 }

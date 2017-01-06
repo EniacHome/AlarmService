@@ -2,7 +2,7 @@ package com.eniacdevelopment.EniacHome.Serial;
 
 import com.eniacdevelopment.EniacHome.DataModel.Configuration.SerialConfiguration;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.ConfigurationRepository;
-import com.eniacdevelopment.EniacHome.Serial.Objects.SerialNotification;
+import com.eniacdevelopment.EniacHome.Serial.Objects.SensorNotification;
 import com.eniacdevelopment.EniacHome.Serial.PacketListenerObservers.PacketListenerObserver;
 import com.eniacdevelopment.EniacHome.Serial.PacketParsers.PacketParser;
 import com.fazecast.jSerialComm.SerialPort;
@@ -78,8 +78,8 @@ public class SerialSubject implements SerialPortPacketListener {
     public void serialEvent(SerialPortEvent serialPortEvent) {
         byte[] packet = serialPortEvent.getReceivedData();
 
-        // Create SerialNotification for all observers
-        SerialNotification notification = this.packetParser.parse(packet, serialPortEvent);
+        // Create SensorNotification for all observers
+        SensorNotification notification = this.packetParser.parse(packet, serialPortEvent);
 
         synchronized (this.packetListenerObservers) {
             for (PacketListenerObserver observer : this.packetListenerObservers) {
