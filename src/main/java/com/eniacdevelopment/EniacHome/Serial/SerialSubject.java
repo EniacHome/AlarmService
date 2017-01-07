@@ -89,6 +89,11 @@ public class SerialSubject implements SerialPortPacketListener {
         SensorNotification notification = this.packetParser.parse(packet, serialPortEvent);
         Boolean alarmed = this.alarmCalculator.calculate(notification);
 
+        if (alarmed) {
+            //Alarm should go off. Write 0 byte.
+            serialPortEvent.getSerialPort().writeBytes(new byte[]{0}, 1);
+        }
+
         SensorStatus sensorStatus = new SensorStatus() {{
             Value = notification.Value;
             Date = notification.Date;
