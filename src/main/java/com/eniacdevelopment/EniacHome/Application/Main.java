@@ -5,14 +5,10 @@ import com.eniacdevelopment.EniacHome.Features.AuthenticationFilter;
 import com.eniacdevelopment.EniacHome.Features.ImmediateFeature;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.grizzly.utils.Exceptions;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
 import java.io.IOException;
 import java.net.URI;
 
