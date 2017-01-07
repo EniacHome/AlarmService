@@ -41,10 +41,14 @@ public class SensorResourceTest {
     @Test
     public void addSensor() {
         Sensor Sensor = new Sensor() {{
-            Id = "1";
-            Name = "ContactSensor 1";
+            Id = "3";
+            Name = "ContactSensor index 3";
             SensorType = com.eniacdevelopment.EniacHome.DataModel.Sensor.SensorType.ContactSensor;
             Enabled = true;
+            Level = 5;
+
+            CompareMethod = com.eniacdevelopment.EniacHome.DataModel.Sensor.CompareMethod.Equal;
+            CompareValue = 0;
 
             SensorStatus = null;
         }};

@@ -1,4 +1,4 @@
-package com.eniacdevelopment.EniacHome;
+package com.eniacdevelopment.EniacHome.Resources;
 
 import com.eniacdevelopment.EniacHome.DataModel.Alarm.AlarmStatus;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.AlarmStatusRepository;

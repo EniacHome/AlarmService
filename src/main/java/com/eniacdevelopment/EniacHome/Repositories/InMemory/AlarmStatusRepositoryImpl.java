@@ -44,13 +44,15 @@ public class AlarmStatusRepositoryImpl implements AlarmStatusRepository {
 
     @Override
     public void disableAlarm() {
+        this.alarmStatus.Enabled = false;
+        this.alarmStatus.Level = Integer.MAX_VALUE;
+
         AlarmEvent alarmEvent = new AlarmEvent() {{
-            Enabled = true;
+            Enabled = false;
             Level = Integer.MAX_VALUE;
             Date = new Date();
         }};
 
-        this.alarmStatus.Enabled = false;
-        this.alarmStatus.Level = Integer.MAX_VALUE;
+        this.alarmEventRepository.add(alarmEvent);
     }
 }

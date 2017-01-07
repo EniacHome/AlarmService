@@ -1,5 +1,6 @@
 package com.eniacdevelopment.EniacHome.Serial;
 
+import com.eniacdevelopment.EniacHome.Business.Contracts.AlarmCalculator;
 import com.eniacdevelopment.EniacHome.DataModel.Configuration.SerialConfiguration;
 import com.eniacdevelopment.EniacHome.DataModel.Sensor.SensorStatus;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.ConfigurationRepository;
@@ -26,13 +27,15 @@ public class SerialSubject implements SerialPortPacketListener {
 
     private final ConfigurationRepository<SerialConfiguration> configurationRepository;
     private final SensorStatusRepository sensorStatusRepository;
+    private final AlarmCalculator alarmCalculator;
     private final PacketParser packetParser;
     private SerialPort serialPortInstance;
 
     @Inject
-    public SerialSubject(ConfigurationRepository<SerialConfiguration> configurationRepository, SensorStatusRepository sensorStatusRepository, PacketParser packetParser) {
+    public SerialSubject(ConfigurationRepository<SerialConfiguration> configurationRepository, SensorStatusRepository sensorStatusRepository, AlarmCalculator alarmCalculator, PacketParser packetParser) {
         this.configurationRepository = configurationRepository;
         this.sensorStatusRepository = sensorStatusRepository;
+        this.alarmCalculator = alarmCalculator;
         this.packetParser = packetParser;
     }
 
@@ -84,11 +87,12 @@ public class SerialSubject implements SerialPortPacketListener {
 
         // Create SensorNotification for all observers
         SensorNotification notification = this.packetParser.parse(packet, serialPortEvent);
+        Boolean alarmed = this.alarmCalculator.calculate(notification);
 
         SensorStatus sensorStatus = new SensorStatus() {{
             Value = notification.Value;
             Date = notification.Date;
-            Alarmed = false; //TODO calculate Alarmed
+            Alarmed = alarmed;
         }};
         this.sensorStatusRepository.put(notification.Id, sensorStatus);
 
