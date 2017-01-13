@@ -36,7 +36,7 @@ public class ConfigurationResourceTest {
         SerialConfiguration config = new SerialConfiguration(){{
             Id = "CONFIG";
             Active = true;
-            BaudRate = 10417;
+            BaudRate = 9600;
             DataBits = 8;
             Parity = 0;
             StopBits = 1;

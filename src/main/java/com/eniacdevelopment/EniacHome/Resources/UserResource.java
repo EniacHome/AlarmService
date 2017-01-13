@@ -3,7 +3,6 @@ package com.eniacdevelopment.EniacHome.Resources;
 import com.eniacdevelopment.EniacHome.DataModel.User.User;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.UserRepository;
 
-import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -22,7 +21,7 @@ public class UserResource {
     }
 
     @GET
-    @RolesAllowed("Admin")
+    //@RolesAllowed("Admin")
     @Produces(MediaType.APPLICATION_JSON)
     public Iterable<User> getUsers(){
         return this.userRepository.getAll();
