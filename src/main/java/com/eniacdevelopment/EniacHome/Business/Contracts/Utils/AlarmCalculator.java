@@ -1,4 +1,4 @@
-package com.eniacdevelopment.EniacHome.Business.Contracts;
+package com.eniacdevelopment.EniacHome.Business.Contracts.Utils;
 
 import com.eniacdevelopment.EniacHome.Serial.Objects.SensorNotification;
 

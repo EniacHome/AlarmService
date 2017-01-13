@@ -1,6 +1,6 @@
 package com.eniacdevelopment.EniacHome.Business.Utils;
 
-import com.eniacdevelopment.EniacHome.Business.Contracts.AlarmCalculator;
+import com.eniacdevelopment.EniacHome.Business.Contracts.Utils.AlarmCalculator;
 import com.eniacdevelopment.EniacHome.DataModel.Alarm.AlarmStatus;
 import com.eniacdevelopment.EniacHome.DataModel.Sensor.Sensor;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.AlarmStatusRepository;

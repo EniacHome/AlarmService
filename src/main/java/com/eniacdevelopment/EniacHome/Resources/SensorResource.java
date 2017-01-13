@@ -1,7 +1,7 @@
 package com.eniacdevelopment.EniacHome.Resources;
 
+import com.eniacdevelopment.EniacHome.Business.Contracts.SensorService;
 import com.eniacdevelopment.EniacHome.DataModel.Sensor.Sensor;
-import com.eniacdevelopment.EniacHome.Repositories.Shared.SensorRepository;
 import com.eniacdevelopment.EniacHome.Serial.SerialSubject;
 
 import javax.inject.Inject;
@@ -14,43 +14,43 @@ import javax.ws.rs.core.MediaType;
 @Path("sensor")
 public class SensorResource {
 
-    private final SensorRepository sensorRepository;
+    private final SensorService sensorService;
     private final SerialSubject serialSubject;
 
     @Inject
-    public SensorResource(SensorRepository sensorRepository, SerialSubject serialSubject) {
-        this.sensorRepository = sensorRepository;
+    public SensorResource(SensorService sensorService, SerialSubject serialSubject) {
+        this.sensorService = sensorService;
         this.serialSubject = serialSubject;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Iterable<Sensor> getSensors() {
-        return this.sensorRepository.getAll();
+        return this.sensorService.getAllSensors();
     }
 
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Sensor getSensor(@PathParam("id") String id) {
-        return this.sensorRepository.get(id);
+        return this.sensorService.getSensor(id);
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public void addSensor(Sensor sensor) {
-        this.sensorRepository.add(sensor);
+        this.sensorService.addSensor(sensor);
     }
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public void updateSensor(Sensor sensor) {
-        this.sensorRepository.update(sensor);
+        this.sensorService.updateSensor(sensor);
     }
 
     @DELETE
     @Path("{id}")
     public void deleteSensor(@PathParam("id") String id) {
-        this.sensorRepository.delete(id);
+        this.sensorService.deleteSensor(id);
     }
 }

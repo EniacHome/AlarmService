@@ -1,6 +1,6 @@
 package com.eniacdevelopment.EniacHome.Serial;
 
-import com.eniacdevelopment.EniacHome.Business.Contracts.AlarmCalculator;
+import com.eniacdevelopment.EniacHome.Business.Contracts.Utils.AlarmCalculator;
 import com.eniacdevelopment.EniacHome.DataModel.Configuration.SerialConfiguration;
 import com.eniacdevelopment.EniacHome.DataModel.Sensor.SensorStatus;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.ConfigurationRepository;
