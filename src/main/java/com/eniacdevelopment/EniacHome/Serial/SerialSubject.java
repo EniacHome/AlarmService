@@ -71,6 +71,14 @@ public class SerialSubject implements SerialPortPacketListener {
         this.serialPortInstance.openPort();
     }
 
+    public void startAlarm() {
+        this.serialPortInstance.writeBytes(new byte[]{0}, 1);
+    }
+
+    public void stopAlarm() {
+        this.serialPortInstance.writeBytes(new byte[]{1}, 1);
+    }
+
     @Override
     public int getPacketSize() {
         return 2;
@@ -90,8 +98,7 @@ public class SerialSubject implements SerialPortPacketListener {
         Boolean alarmed = this.alarmCalculator.calculate(notification);
 
         if (alarmed) {
-            //Alarm should go off. Write 0 byte.
-            serialPortEvent.getSerialPort().writeBytes(new byte[]{0}, 1);
+            this.startAlarm();
         }
 
         SensorStatus sensorStatus = new SensorStatus() {{

@@ -7,4 +7,6 @@ import com.eniacdevelopment.EniacHome.Serial.Objects.SensorNotification;
  */
 public interface AlarmCalculator {
     boolean calculate(SensorNotification sensorNotification);
+
+    boolean calculate(String sensorId);
 }

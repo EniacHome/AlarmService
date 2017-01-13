@@ -6,6 +6,7 @@ import com.eniacdevelopment.EniacHome.Repositories.Shared.SensorStatusRepository
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by larsg on 1/5/2017.
@@ -29,5 +30,9 @@ public class SensorStatusRepositoryImpl implements SensorStatusRepository {
     @Override
     public SensorStatus get(String Id) {
         return this.memory.get(Id);
+    }
+
+    public Set<Map.Entry<String, SensorStatus>> getAll() {
+        return this.memory.entrySet();
     }
 }
