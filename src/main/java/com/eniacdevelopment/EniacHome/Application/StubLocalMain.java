@@ -29,8 +29,8 @@ public class StubLocalMain {
 
             packetListenerObserverConfiguration = new PacketListenerObserverConfiguration(){{
                 PacketListenerObservers = new HashMap<String, Boolean>() {{
-                    put("com.eniacdevelopment.EniacHome.Serial.PacketListenerObservers.SensorEventPacketListenerObserver", false);
-                    put("com.eniacdevelopment.EniacHome.Serial.PacketListenerObservers.JerseyPacketListenerObserver", true);
+                    put("com.eniacdevelopment.EniacHome.Serial.EventListenerObservers.SensorEventEventListenerObserver", false);
+                    put("com.eniacdevelopment.EniacHome.Serial.EventListenerObservers.JerseyEventListenerObserver", true);
                 }};
             }};
         }};

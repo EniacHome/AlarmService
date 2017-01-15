@@ -14,6 +14,9 @@ import javax.inject.Inject;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by larsg on 1/13/2017.
@@ -49,11 +52,15 @@ public class AlarmServiceImpl implements AlarmService {
 
         Set<Map.Entry<String, SensorStatus>> sensorStatuses = this.sensorStatusRepository.getAll();
 
-        for (Map.Entry<String, SensorStatus> statusEntry : sensorStatuses) {
-            if (this.alarmCalculator.calculate(statusEntry.getKey())) {
-                this.serialSubject.startAlarm();
+        final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.schedule(() -> {
+            for (Map.Entry<String, SensorStatus> statusEntry : sensorStatuses) {
+                if (this.alarmCalculator.calculate(statusEntry.getKey())) {
+                    statusEntry.getValue().Alarmed = true;
+                    this.serialSubject.triggerSensorEvent(statusEntry.getKey());
+                }
             }
-        }
+        }, 10, TimeUnit.SECONDS);   //TODO Delay should come from es configuration
         
         AlarmEvent alarmEvent = new AlarmEvent() {{
             Enabled = true;
@@ -64,7 +71,11 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     public void disableAlarm() {
-        this.serialSubject.stopAlarm();
+        Set<Map.Entry<String, SensorStatus>> sensorStatuses = this.sensorStatusRepository.getAll();
+        for (Map.Entry<String, SensorStatus> statusEntry : sensorStatuses) {
+            statusEntry.getValue().Alarmed = false;
+            this.serialSubject.triggerSensorEvent(statusEntry.getKey());
+        }
 
         AlarmStatus alarmStatus = new AlarmStatus() {{
             Enabled = false;

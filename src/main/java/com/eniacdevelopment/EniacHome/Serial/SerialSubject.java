@@ -5,8 +5,8 @@ import com.eniacdevelopment.EniacHome.DataModel.Configuration.SerialConfiguratio
 import com.eniacdevelopment.EniacHome.DataModel.Sensor.SensorStatus;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.ConfigurationRepository;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.SensorStatusRepository;
+import com.eniacdevelopment.EniacHome.Serial.EventListenerObservers.EventListenerObserver;
 import com.eniacdevelopment.EniacHome.Serial.Objects.SensorNotification;
-import com.eniacdevelopment.EniacHome.Serial.PacketListenerObservers.PacketListenerObserver;
 import com.eniacdevelopment.EniacHome.Serial.PacketParsers.PacketParser;
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortEvent;
@@ -22,8 +22,8 @@ import java.util.List;
  * A DataListener that can be plugged into JSerialComm.SerialPort for packet handling.
  */
 public class SerialSubject implements SerialPortPacketListener {
-    private final List<PacketListenerObserver> packetListenerObservers =
-            Collections.synchronizedList(new ArrayList<PacketListenerObserver>());
+    private final List<EventListenerObserver> eventListenerObservers =
+            Collections.synchronizedList(new ArrayList<EventListenerObserver>());
 
     private final ConfigurationRepository<SerialConfiguration> configurationRepository;
     private final SensorStatusRepository sensorStatusRepository;
@@ -39,9 +39,9 @@ public class SerialSubject implements SerialPortPacketListener {
         this.packetParser = packetParser;
     }
 
-    public void addObserver(PacketListenerObserver packetListenerObserver) {
-        synchronized (this.packetListenerObservers) {
-            this.packetListenerObservers.add(packetListenerObserver);
+    public void addObserver(EventListenerObserver packetListenerObserver) {
+        synchronized (this.eventListenerObservers) {
+            this.eventListenerObservers.add(packetListenerObserver);
         }
     }
 
@@ -60,6 +60,7 @@ public class SerialSubject implements SerialPortPacketListener {
 
         if(this.serialPortInstance != null) {
             this.serialPortInstance.closePort();
+            this.serialPortInstance = null;
         }
         this.serialPortInstance = SerialPort.getCommPort(serialConfiguration.PortDescriptor);
         this.serialPortInstance.addDataListener(this);
@@ -71,12 +72,20 @@ public class SerialSubject implements SerialPortPacketListener {
         this.serialPortInstance.openPort();
     }
 
-    public void startAlarm() {
-        this.serialPortInstance.writeBytes(new byte[]{0}, 1);
-    }
+    public void triggerSensorEvent(String sensorId) {
+        SensorStatus sensorStatus = this.sensorStatusRepository.get(sensorId);
 
-    public void stopAlarm() {
-        this.serialPortInstance.writeBytes(new byte[]{1}, 1);
+        if (sensorStatus.Alarmed) {
+            this.serialPortInstance.writeBytes(new byte[]{0}, 1);
+        } else {
+            this.serialPortInstance.writeBytes(new byte[]{1}, 1);
+        }
+
+        synchronized (this.eventListenerObservers) {
+            for (EventListenerObserver eventListenerObserver : this.eventListenerObservers) {
+                eventListenerObserver.eventNotify(sensorId);
+            }
+        }
     }
 
     @Override
@@ -97,10 +106,6 @@ public class SerialSubject implements SerialPortPacketListener {
         SensorNotification notification = this.packetParser.parse(packet, serialPortEvent);
         Boolean alarmed = this.alarmCalculator.calculate(notification);
 
-        if (alarmed) {
-            this.startAlarm();
-        }
-
         SensorStatus sensorStatus = new SensorStatus() {{
             Value = notification.Value;
             Date = notification.Date;
@@ -108,10 +113,6 @@ public class SerialSubject implements SerialPortPacketListener {
         }};
         this.sensorStatusRepository.put(notification.Id, sensorStatus);
 
-        synchronized (this.packetListenerObservers) {
-            for (PacketListenerObserver observer : this.packetListenerObservers) {
-                observer.eventNotify(notification.Id);
-            }
-        }
+        this.triggerSensorEvent(notification.Id);
     }
 }

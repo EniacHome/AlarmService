@@ -25,6 +25,7 @@ public class AlarmStatusRepositoryImpl implements AlarmStatusRepository {
 
     @Override
     public void setAlarmStatus(AlarmStatus alarmStatus) {
-        this.alarmStatus = alarmStatus;
+        this.alarmStatus.Level = alarmStatus.Level;
+        this.alarmStatus.Enabled = alarmStatus.Enabled;
     }
 }
