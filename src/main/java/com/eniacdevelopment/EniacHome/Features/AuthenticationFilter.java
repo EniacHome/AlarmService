@@ -1,16 +1,15 @@
 package com.eniacdevelopment.EniacHome.Features;
 
+import com.eniacdevelopment.EniacHome.Business.Contracts.UserService;
 import com.eniacdevelopment.EniacHome.DataModel.User.User;
 import com.eniacdevelopment.EniacHome.DataModel.User.UserRole;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.Objects.TokenAuthenticationResult;
-import com.eniacdevelopment.EniacHome.Repositories.Shared.TokenRepository;
-import com.eniacdevelopment.EniacHome.Repositories.Shared.UserRepository;
 
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.SecurityContext;
 import java.io.IOException;
@@ -22,12 +21,10 @@ import java.security.Principal;
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
 
-    private final TokenRepository tokenRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public AuthenticationFilter(@Context TokenRepository tokenRepository, @Context UserRepository userRepository){
-        this.tokenRepository = tokenRepository;
-        this.userRepository = userRepository;
+    public AuthenticationFilter(@Context UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -39,18 +36,18 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         }
         String token = authorizationHeader.substring("Bearer".length()).trim();
 
-        TokenAuthenticationResult result = this.tokenRepository.authenticateToken(token);
+        TokenAuthenticationResult result = this.userService.authenticateToken(token);
         if(!result.Authenticated) {
             return; /*If DynamicRoles is hit and no user is supplied it will return unauthorized */
         }
 
-        User user = this.userRepository.get(result.UserId);
+        User user = this.userService.getUser(result.UserId);
         if(user == null){
-            this.tokenRepository.delete(result.UserId); /*The token is no longer valid, get rid of it*/
+            this.userService.deleteUser(result.UserId); /*The token is no longer valid, get rid of it*/
             return; /*If DynamicRoles is hit and no user is supplied it will return unauthorized */
         }
 
-        this.tokenRepository.updateToken(result.UserId);
+        this.userService.updateToken(result.UserId);
         containerRequestContext.setSecurityContext(new SecurityContextImpl(containerRequestContext.getSecurityContext(), user));
     }
 
@@ -67,12 +64,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
         @Override
         public Principal getUserPrincipal() {
-            return new Principal() {
-                @Override
-                public String getName() {
-                    return user.Username;
-                }
-            };
+            return () -> user.Username;
         }
 
         @Override

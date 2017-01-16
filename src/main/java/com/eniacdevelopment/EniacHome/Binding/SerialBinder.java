@@ -21,7 +21,7 @@ public class SerialBinder extends AbstractBinder {
         bind(PacketParserImpl.class).to(PacketParser.class);
         bind(SerialSubject.class).to(SerialSubject.class).in(Singleton.class);
 
-        //The factory is used to immediately add all PacketListenerObservers to the already Singleton SerialSubject.
+        //The factory is used to immediately add all EventListenerObservers to the already Singleton SerialSubject.
         bindFactory(SerialSubjectFactory.class).to(SerialSubject.class).in(Immediate.class);
     }
 }

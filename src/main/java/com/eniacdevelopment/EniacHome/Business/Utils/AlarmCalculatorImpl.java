@@ -1,10 +1,11 @@
 package com.eniacdevelopment.EniacHome.Business.Utils;
 
-import com.eniacdevelopment.EniacHome.Business.Contracts.AlarmCalculator;
+import com.eniacdevelopment.EniacHome.Business.Contracts.SensorService;
+import com.eniacdevelopment.EniacHome.Business.Contracts.Utils.AlarmCalculator;
 import com.eniacdevelopment.EniacHome.DataModel.Alarm.AlarmStatus;
+import com.eniacdevelopment.EniacHome.DataModel.Sensor.CompareMethod;
 import com.eniacdevelopment.EniacHome.DataModel.Sensor.Sensor;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.AlarmStatusRepository;
-import com.eniacdevelopment.EniacHome.Repositories.Shared.SensorRepository;
 import com.eniacdevelopment.EniacHome.Serial.Objects.SensorNotification;
 
 import javax.inject.Inject;
@@ -15,18 +16,22 @@ import javax.inject.Inject;
 public class AlarmCalculatorImpl implements AlarmCalculator {
 
     private final AlarmStatusRepository alarmStatusRepository;
-    private final SensorRepository sensorRepository;
+    private final SensorService sensorService;
 
     @Inject
-    public AlarmCalculatorImpl(AlarmStatusRepository alarmStatusRepository, SensorRepository sensorRepository) {
+    public AlarmCalculatorImpl(AlarmStatusRepository alarmStatusRepository, SensorService sensorService) {
         this.alarmStatusRepository = alarmStatusRepository;
-        this.sensorRepository = sensorRepository;
+        this.sensorService = sensorService;
     }
 
     @Override
     public boolean calculate(SensorNotification sensorNotification) {
         AlarmStatus alarmStatus = this.alarmStatusRepository.getAlarmStatus();
-        Sensor sensor = this.sensorRepository.get(sensorNotification.Id);
+        Sensor sensor = this.sensorService.getSensor(sensorNotification.Id);
+
+        if (sensor == null) {
+            return false;
+        }
 
         if (!alarmStatus.Enabled || !sensor.Enabled) {
             return false;
@@ -36,19 +41,44 @@ public class AlarmCalculatorImpl implements AlarmCalculator {
             return false;
         }
 
-        switch (sensor.CompareMethod) {
+        return compare(sensor.CompareMethod, sensor.CompareValue, sensorNotification.Value);
+    }
+
+    @Override
+    public boolean calculate(String sensorId) {
+        AlarmStatus alarmStatus = this.alarmStatusRepository.getAlarmStatus();
+        Sensor sensor = this.sensorService.getSensor(sensorId);
+
+        if (sensor == null) {
+            return false;
+        }
+
+        if (!alarmStatus.Enabled || !sensor.Enabled) {
+            return false;
+        }
+
+        if (alarmStatus.Level > sensor.Level) {
+            return false;
+        }
+
+        return compare(sensor.CompareMethod, sensor.CompareValue, sensor.SensorStatus.Value);
+    }
+
+    private boolean compare(CompareMethod compareMethod, int compareValue, int value) {
+        switch (compareMethod) {
             case Equal:
-                return sensor.CompareValue == sensorNotification.Value;
+                return compareValue == value;
             case Greater:
-                return sensor.CompareValue > sensorNotification.Value;
+                return compareValue > value;
             case Smaller:
-                return sensor.CompareValue < sensorNotification.Value;
+                return compareValue < value;
             case GreaterOrEqual:
-                return sensor.CompareValue >= sensorNotification.Value;
+                return compareValue >= value;
             case SmallerOrEqual:
-                return sensor.CompareValue <= sensorNotification.Value;
+                return compareValue <= value;
             default:
                 return false;
         }
     }
+
 }

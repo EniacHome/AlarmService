@@ -1,4 +1,4 @@
-package com.eniacdevelopment.EniacHome.Business.Contracts;
+package com.eniacdevelopment.EniacHome.Business.Contracts.Utils;
 
 import com.eniacdevelopment.EniacHome.Serial.Objects.SensorNotification;
 
@@ -7,4 +7,6 @@ import com.eniacdevelopment.EniacHome.Serial.Objects.SensorNotification;
  */
 public interface AlarmCalculator {
     boolean calculate(SensorNotification sensorNotification);
+
+    boolean calculate(String sensorId);
 }

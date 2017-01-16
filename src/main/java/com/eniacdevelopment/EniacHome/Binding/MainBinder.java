@@ -22,10 +22,11 @@ public class MainBinder extends AbstractBinder {
     protected void configure() {
         install(new JacksonBinder());
         install(new TransportClientBinder());
-        install(new PacketListenerObserverBinder());
+        install(new EventListenerObserverBinder());
         install(new SerialBinder());
         install(new SensorBinder());
         install(new AlarmBinder());
+        install(new ServiceBinder());
 
         bindFactory(LocalConfigurationFactory.class).to(LocalConfiguration.class);
 

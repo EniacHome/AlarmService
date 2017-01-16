@@ -1,5 +1,5 @@
 
-package com.eniacdevelopment.EniacHome.Serial.PacketListenerObservers;
+package com.eniacdevelopment.EniacHome.Serial.EventListenerObservers;
 
 import com.eniacdevelopment.EniacHome.DataModel.Sensor.SensorEvent;
 import com.eniacdevelopment.EniacHome.DataModel.Sensor.SensorStatus;
@@ -11,13 +11,13 @@ import javax.inject.Inject;
 /**
  * Created by larsg on 9/28/2016.
  */
-public class SensorEventPacketListenerObserver extends PacketListenerObserver {
+public class SensorEventEventListenerObserver extends EventListenerObserver {
 
     private final SensorEventRepository sensorEventRepository;
     private final SensorStatusRepository sensorStatusRepository;
 
     @Inject
-    public SensorEventPacketListenerObserver(SensorEventRepository sensorEventRepository, SensorStatusRepository sensorStatusRepository) {
+    public SensorEventEventListenerObserver(SensorEventRepository sensorEventRepository, SensorStatusRepository sensorStatusRepository) {
         this.sensorEventRepository = sensorEventRepository;
         this.sensorStatusRepository = sensorStatusRepository;
     }

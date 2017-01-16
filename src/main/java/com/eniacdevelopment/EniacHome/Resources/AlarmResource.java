@@ -1,7 +1,7 @@
 package com.eniacdevelopment.EniacHome.Resources;
 
+import com.eniacdevelopment.EniacHome.Business.Contracts.AlarmService;
 import com.eniacdevelopment.EniacHome.DataModel.Alarm.AlarmStatus;
-import com.eniacdevelopment.EniacHome.Repositories.Shared.AlarmStatusRepository;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -16,29 +16,28 @@ import javax.ws.rs.core.MediaType;
 @Path("alarm")
 public class AlarmResource {
 
-    private final AlarmStatusRepository alarmStatusRepository;
+    private final AlarmService alarmService;
 
     @Inject
-    public AlarmResource(AlarmStatusRepository alarmStatusRepository) {
-        this.alarmStatusRepository = alarmStatusRepository;
+    public AlarmResource(AlarmService alarmService) {
+        this.alarmService = alarmService;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public AlarmStatus getAlarmStatus() {
-        return this.alarmStatusRepository.getAlarmStatus();
+        return this.alarmService.getAlarmStatus();
     }
 
     @GET
     @Path("enable/{level}")
     public void enableAlarm(@PathParam("level") int level) {
-        this.alarmStatusRepository.enableAlarm(level);
+        this.alarmService.enableAlarm(level);
     }
 
     @GET
     @Path("disable")
     public void disableAlarm() {
-        this.alarmStatusRepository.disableAlarm();
+        this.alarmService.disableAlarm();
     }
-
 }

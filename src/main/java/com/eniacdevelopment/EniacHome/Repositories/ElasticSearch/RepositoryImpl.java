@@ -145,10 +145,14 @@ public abstract class RepositoryImpl<T extends Entity> implements Repository<T> 
         }
 
         byte[] jsonItem = getResponse.getSourceAsBytes();
+        if (jsonItem == null) {
+            return null;
+        }
+
         T item = null;
         try {
             item = this.objectMapper.readValue(jsonItem, this.type);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
