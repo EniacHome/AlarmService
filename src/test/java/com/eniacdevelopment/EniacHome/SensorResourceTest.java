@@ -1,6 +1,7 @@
 package com.eniacdevelopment.EniacHome;
 
 import com.eniacdevelopment.EniacHome.DataModel.Sensor.Sensor;
+import com.eniacdevelopment.EniacHome.DataModel.Sensor.SensorType;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;
 import org.junit.Before;
@@ -34,6 +35,13 @@ public class SensorResourceTest {
     @Test
     public void getSensors() {
         Iterable<Sensor> response = target.path("sensor").request().get(new GenericType<Iterable<Sensor>>() {
+        });
+        assertTrue(response != null);
+    }
+
+    @Test
+    public void getSensorsByType() {
+        Iterable<Sensor> response = target.path("sensor").path("type").path(SensorType.ContactSensor.name()).request().get(new GenericType<Iterable<Sensor>>() {
         });
         assertTrue(response != null);
     }
