@@ -2,6 +2,7 @@ package com.eniacdevelopment.EniacHome.Resources;
 
 import com.eniacdevelopment.EniacHome.Business.Contracts.SensorService;
 import com.eniacdevelopment.EniacHome.DataModel.Sensor.Sensor;
+import com.eniacdevelopment.EniacHome.DataModel.Sensor.SensorType;
 import com.eniacdevelopment.EniacHome.Serial.SerialSubject;
 
 import javax.inject.Inject;
@@ -27,6 +28,13 @@ public class SensorResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Iterable<Sensor> getSensors() {
         return this.sensorService.getAllSensors();
+    }
+
+    @GET
+    @Path("type/{type}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Iterable<Sensor> getSensorBySensorType(@PathParam("type") SensorType sensorType) {
+        return this.sensorService.getSensors(sensorType);
     }
 
     @GET

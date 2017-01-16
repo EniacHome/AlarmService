@@ -2,6 +2,7 @@ package com.eniacdevelopment.EniacHome.Business;
 
 import com.eniacdevelopment.EniacHome.Business.Contracts.SensorService;
 import com.eniacdevelopment.EniacHome.DataModel.Sensor.Sensor;
+import com.eniacdevelopment.EniacHome.DataModel.Sensor.SensorType;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.SensorRepository;
 import com.eniacdevelopment.EniacHome.Repositories.Shared.SensorStatusRepository;
 
@@ -29,6 +30,11 @@ public class SensorServiceImpl implements SensorService {
         }
 
         return sensors;
+    }
+
+    @Override
+    public Iterable<Sensor> getSensors(SensorType sensorType) {
+        return this.sensorRepository.getSensors(sensorType);
     }
 
     @Override
