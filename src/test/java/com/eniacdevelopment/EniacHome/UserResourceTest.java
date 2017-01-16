@@ -42,19 +42,13 @@ public class UserResourceTest {
 
     @Test
     public void addUser(){
-
-        final List<UserRole> roleSet = new ArrayList<UserRole>(){{
-            add(UserRole.Admin);
-            add(UserRole.User);
-        }};
-
         User user = new User(){{
             Id = "lg";
             Username = "Lars";
             Firstname = "Lars";
             Lastname = "Gardien";
             PasswordHash = "Password";
-            Roles = roleSet;
+            Role = UserRole.Admin;
         }};
 
         this.target.path("user").request().post(Entity.json(user));

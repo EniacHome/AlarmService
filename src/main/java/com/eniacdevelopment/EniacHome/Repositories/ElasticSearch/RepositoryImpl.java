@@ -131,7 +131,7 @@ public abstract class RepositoryImpl<T extends Entity> implements Repository<T> 
 
     @Override
     public T get(String id) {
-        GetResponse getResponse = null;
+        GetResponse getResponse;
         try {
             getResponse = this.transportClient.prepareGet()
                     .setIndex(this.index)
@@ -149,7 +149,7 @@ public abstract class RepositoryImpl<T extends Entity> implements Repository<T> 
             return null;
         }
 
-        T item = null;
+        T item;
         try {
             item = this.objectMapper.readValue(jsonItem, this.type);
         } catch (Exception e) {
@@ -190,7 +190,7 @@ public abstract class RepositoryImpl<T extends Entity> implements Repository<T> 
     }
 
     public List<T> search(QueryBuilder query){
-        SearchResponse searchResponse = null;
+        SearchResponse searchResponse;
         try {
             searchResponse = this.transportClient.prepareSearch()
                     .setIndices(this.index)
@@ -200,15 +200,17 @@ public abstract class RepositoryImpl<T extends Entity> implements Repository<T> 
                     .get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
+            return null;
         }
 
         List<T> items = new ArrayList<>();
         for(SearchHit searchHit : searchResponse.getHits()){
-            T item = null;
+            T item;
             try {
                 item = this.objectMapper.readValue(searchHit.getSourceRef().toBytes(), type);
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
             if(item != null) {
                 items.add(item);

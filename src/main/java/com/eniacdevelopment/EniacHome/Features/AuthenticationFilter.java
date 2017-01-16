@@ -69,15 +69,18 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
         @Override
         public boolean isUserInRole(String role) {
-            if(this.user.Roles == null){
+            if (this.user.Role == null) {
                 return false;
             }
-            for (UserRole userRole :  this.user.Roles) {
-                if(userRole.toString().equals(role)){
-                    return true;
-                }
+
+            UserRole enumRole;
+            try {
+                enumRole = UserRole.valueOf(role);
+            } catch (IllegalArgumentException | NullPointerException ex) {
+                return false;
             }
-            return false;
+
+            return enumRole.ordinal() <= user.Role.ordinal();
         }
 
         @Override
