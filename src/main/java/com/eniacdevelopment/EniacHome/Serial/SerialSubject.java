@@ -59,6 +59,7 @@ public class SerialSubject implements SerialPortPacketListener {
         }
 
         if(this.serialPortInstance != null) {
+            this.serialPortInstance.writeBytes(new byte[]{2}, 1);
             this.serialPortInstance.closePort();
             this.serialPortInstance = null;
         }
@@ -70,6 +71,18 @@ public class SerialSubject implements SerialPortPacketListener {
                 serialConfiguration.StopBits,
                 serialConfiguration.Parity);
         this.serialPortInstance.openPort();
+
+        int bytesAvailable;
+        while ((bytesAvailable = this.serialPortInstance.bytesAvailable()) == 0) {
+            this.serialPortInstance.writeBytes(new byte[]{85}, 1);
+        }
+        if(bytesAvailable == -1){
+            System.err.println("Serialport Closed during AutoBaud");
+            return;
+        }
+
+        byte buffer[] = new byte[1];
+        this.serialPortInstance.readBytes(buffer, 1); //Read from buffer to clear it
     }
 
     public void triggerSensorEvent(String sensorId) {
