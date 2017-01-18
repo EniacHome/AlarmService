@@ -1,7 +1,5 @@
 package com.eniacdevelopment.EniacHome.Binding.Factory;
 
-import com.eniacdevelopment.EniacHome.Configuration.LocalConfiguration;
-import com.eniacdevelopment.EniacHome.Configuration.PacketListenerObserverConfiguration;
 import com.eniacdevelopment.EniacHome.Serial.EventListenerObservers.EventListenerObserver;
 import com.eniacdevelopment.EniacHome.Serial.SerialSubject;
 import org.glassfish.hk2.api.Factory;
@@ -28,8 +26,6 @@ public class SerialSubjectFactory implements Factory<SerialSubject> {
 
     @Override
     public SerialSubject provide() {
-        PacketListenerObserverConfiguration configuration = serviceLocator.getService(LocalConfiguration.class).packetListenerObserverConfiguration;
-
         //Get all types that extend EventListenerObserver
         Reflections reflections = new Reflections("com.eniacdevelopment.EniacHome.Serial.EventListenerObservers");
         Set<Class<? extends EventListenerObserver>> observerClasses = reflections.getSubTypesOf(EventListenerObserver.class);
@@ -38,10 +34,8 @@ public class SerialSubjectFactory implements Factory<SerialSubject> {
         for (Class<? extends EventListenerObserver> observerClass : observerClasses) {
             //Get the observer from the ServiceLocator
             EventListenerObserver observer = this.serviceLocator.getService(observerClass);
-            if((observer != null) &&
-                    !(configuration.PacketListenerObservers.containsKey(observerClass.getName()) &&
-                            !configuration.PacketListenerObservers.get(observerClass.getName()))) {
-                //Only add the observer if it is found in the ServiceLocator and if it is enabled in config
+            if (observer != null) {
+                //Only add the observer if it is found in the ServiceLocator
                 serialSubject.addObserver(observer);
             }
         }

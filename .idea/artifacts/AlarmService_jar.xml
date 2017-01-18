@@ -22,6 +22,67 @@
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/glassfish/grizzly/grizzly-framework/2.3.23/grizzly-framework-2.3.23.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/glassfish/hk2/external/javax.inject/2.5.0-b05/javax.inject-2.5.0-b05.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/glassfish/jersey/containers/jersey-container-grizzly2-http/2.24/jersey-container-grizzly2-http-2.24.jar" path-in-jar="/" />
+      <element id="library" level="project" name="Maven: org.glassfish.jersey.media:jersey-media-sse:2.24" />
+      <element id="library" level="project" name="Maven: org.glassfish.hk2.external:javax.inject:2.5.0-b05" />
+      <element id="library" level="project" name="Maven: org.glassfish.jersey.core:jersey-server:2.24" />
+      <element id="library" level="project" name="Maven: org.glassfish.jersey.core:jersey-client:2.24" />
+      <element id="library" level="project" name="Maven: org.glassfish.jersey.media:jersey-media-jaxb:2.24" />
+      <element id="library" level="project" name="Maven: javax.annotation:javax.annotation-api:1.2" />
+      <element id="library" level="project" name="Maven: org.glassfish.hk2:hk2-api:2.5.0-b05" />
+      <element id="library" level="project" name="Maven: org.glassfish.hk2:hk2-utils:2.5.0-b05" />
+      <element id="library" level="project" name="Maven: org.glassfish.hk2.external:aopalliance-repackaged:2.5.0-b05" />
+      <element id="library" level="project" name="Maven: org.glassfish.hk2:hk2-locator:2.5.0-b05" />
+      <element id="library" level="project" name="Maven: javax.validation:validation-api:1.1.0.Final" />
+      <element id="library" level="project" name="Maven: com.eniacdevelopment.eniachome.datamodel:DataModel:1.0-SNAPSHOT" />
+      <element id="library" level="project" name="Maven: org.glassfish.jersey.containers:jersey-container-grizzly2-http:2.24" />
+      <element id="library" level="project" name="Maven: org.glassfish.grizzly:grizzly-http-server:2.3.23" />
+      <element id="library" level="project" name="Maven: org.glassfish.grizzly:grizzly-http:2.3.23" />
+      <element id="library" level="project" name="Maven: org.glassfish.grizzly:grizzly-framework:2.3.23" />
+      <element id="library" level="project" name="Maven: org.glassfish.jersey.core:jersey-common:2.24" />
+      <element id="library" level="project" name="Maven: org.glassfish.jersey.bundles.repackaged:jersey-guava:2.24" />
+      <element id="library" level="project" name="Maven: org.glassfish.hk2:osgi-resource-locator:1.0.1" />
+      <element id="library" level="project" name="Maven: javax.ws.rs:javax.ws.rs-api:2.0.1" />
+      <element id="library" level="project" name="Maven: com.fazecast:jSerialComm:1.3.11" />
+      <element id="library" level="project" name="Maven: org.elasticsearch:elasticsearch:2.4.1" />
+      <element id="library" level="project" name="Maven: org.apache.lucene:lucene-core:5.5.2" />
+      <element id="library" level="project" name="Maven: org.apache.lucene:lucene-backward-codecs:5.5.2" />
+      <element id="library" level="project" name="Maven: org.apache.lucene:lucene-analyzers-common:5.5.2" />
+      <element id="library" level="project" name="Maven: org.apache.lucene:lucene-queries:5.5.2" />
+      <element id="library" level="project" name="Maven: org.apache.lucene:lucene-memory:5.5.2" />
+      <element id="library" level="project" name="Maven: org.apache.lucene:lucene-highlighter:5.5.2" />
+      <element id="library" level="project" name="Maven: org.apache.lucene:lucene-queryparser:5.5.2" />
+      <element id="library" level="project" name="Maven: org.apache.lucene:lucene-sandbox:5.5.2" />
+      <element id="library" level="project" name="Maven: org.apache.lucene:lucene-suggest:5.5.2" />
+      <element id="library" level="project" name="Maven: org.apache.lucene:lucene-misc:5.5.2" />
+      <element id="library" level="project" name="Maven: org.apache.lucene:lucene-join:5.5.2" />
+      <element id="library" level="project" name="Maven: org.apache.lucene:lucene-grouping:5.5.2" />
+      <element id="library" level="project" name="Maven: org.apache.lucene:lucene-spatial:5.5.2" />
+      <element id="library" level="project" name="Maven: org.apache.lucene:lucene-spatial3d:5.5.2" />
+      <element id="library" level="project" name="Maven: com.spatial4j:spatial4j:0.5" />
+      <element id="library" level="project" name="Maven: com.google.guava:guava:18.0" />
+      <element id="library" level="project" name="Maven: org.elasticsearch:securesm:1.0" />
+      <element id="library" level="project" name="Maven: com.carrotsearch:hppc:0.7.1" />
+      <element id="library" level="project" name="Maven: joda-time:joda-time:2.9.4" />
+      <element id="library" level="project" name="Maven: org.joda:joda-convert:1.2" />
+      <element id="library" level="project" name="Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-smile:2.8.1" />
+      <element id="library" level="project" name="Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.8.1" />
+      <element id="library" level="project" name="Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.8.1" />
+      <element id="library" level="project" name="Maven: org.yaml:snakeyaml:1.15" />
+      <element id="library" level="project" name="Maven: io.netty:netty:3.10.6.Final" />
+      <element id="library" level="project" name="Maven: com.ning:compress-lzf:1.0.2" />
+      <element id="library" level="project" name="Maven: com.tdunning:t-digest:3.0" />
+      <element id="library" level="project" name="Maven: org.hdrhistogram:HdrHistogram:2.1.6" />
+      <element id="library" level="project" name="Maven: commons-cli:commons-cli:1.3.1" />
+      <element id="library" level="project" name="Maven: com.twitter:jsr166e:1.1.0" />
+      <element id="library" level="project" name="Maven: org.reflections:reflections:0.9.10" />
+      <element id="library" level="project" name="Maven: org.javassist:javassist:3.19.0-GA" />
+      <element id="library" level="project" name="Maven: com.google.code.findbugs:annotations:2.0.1" />
+      <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.3" />
+      <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.8.3" />
+      <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.8.3" />
+      <element id="library" level="project" name="Maven: com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.3" />
+      <element id="library" level="project" name="Maven: com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:2.8.3" />
+      <element id="library" level="project" name="Maven: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.8.3" />
     </root>
   </artifact>
 </component>
