@@ -10,19 +10,17 @@ import java.util.Date;
  */
 public class PacketParserImpl implements PacketParser {
     @Override
-    public SensorNotification parse(byte[] packet, SerialPortEvent event) {
+    public SensorNotification parse(byte[] packetInfo, byte[] packetValue, SerialPortEvent event) {
         SensorNotification notification = new SensorNotification();
 
-        notification.Id = Integer.toString((packet[0] & 0xFF) >> 1);
-        Boolean extended = ((packet[0] & 0xFF) | 1) == 1;
+        notification.Id = Integer.toString((packetInfo[0] & 0xFF) >> 1);
+        Boolean extended = ((packetInfo[0] & 0xFF) & 1) == 1;
 
         if(extended) {
-            byte[] extended_value = null;
-            event.getSerialPort().readBytes(extended_value, 1);
-            notification.Value = packet[1] | (extended_value[0] << 8);
+            notification.Value = (packetValue[0] & 0xFF) | ((packetValue[1] & 0xFF) << 8);
         }
         else {
-            notification.Value = packet[1];
+            notification.Value = packetValue[0] & 0xFF;
         }
 
         notification.Date = new Date();

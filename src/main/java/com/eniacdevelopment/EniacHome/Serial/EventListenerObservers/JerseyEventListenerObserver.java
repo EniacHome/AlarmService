@@ -26,17 +26,6 @@ public class JerseyEventListenerObserver extends EventListenerObserver {
         //Get all SensorInfo from the repository
         Sensor sensor = this.sensorService.getSensor(sensorId);
 
-        if (sensor == null) {
-            sensor = new Sensor() {{
-                Id = sensorId;
-                Name = "Unknown";
-                Level = Integer.MAX_VALUE;
-                SensorType = com.eniacdevelopment.EniacHome.DataModel.Sensor.SensorType.Unknown;
-                Enabled = false;
-                SensorStatus = null;
-            }};
-        }
-
         //Transmit the sensor
         OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
         OutboundEvent event = eventBuilder.name("SensorNotification")

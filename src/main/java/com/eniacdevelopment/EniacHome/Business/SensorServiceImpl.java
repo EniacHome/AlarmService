@@ -40,6 +40,17 @@ public class SensorServiceImpl implements SensorService {
     @Override
     public Sensor getSensor(String id) {
         Sensor sensor = this.sensorRepository.get(id);
+        if (sensor == null) {
+            sensor = new Sensor() {{
+                Id = id;
+                Name = "Unknown";
+                Level = Integer.MAX_VALUE;
+                SensorType = com.eniacdevelopment.EniacHome.DataModel.Sensor.SensorType.Unknown;
+                CompareMethod = com.eniacdevelopment.EniacHome.DataModel.Sensor.CompareMethod.Equal;
+                CompareValue = 0;
+                Enabled = false;
+            }};
+        }
         sensor.SensorStatus = this.sensorStatusRepository.get(id);
 
         return sensor;

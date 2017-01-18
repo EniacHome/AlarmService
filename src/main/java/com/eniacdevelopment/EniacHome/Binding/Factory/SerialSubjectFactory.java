@@ -28,8 +28,6 @@ public class SerialSubjectFactory implements Factory<SerialSubject> {
 
     @Override
     public SerialSubject provide() {
-        this.serialSubject.initializeSerial();
-
         PacketListenerObserverConfiguration configuration = serviceLocator.getService(LocalConfiguration.class).packetListenerObserverConfiguration;
 
         //Get all types that extend EventListenerObserver
@@ -47,6 +45,7 @@ public class SerialSubjectFactory implements Factory<SerialSubject> {
                 serialSubject.addObserver(observer);
             }
         }
+        this.serialSubject.initializeSerial();
 
         return this.serialSubject;
     }
