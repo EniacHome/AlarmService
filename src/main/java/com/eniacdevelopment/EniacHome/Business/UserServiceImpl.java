@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             return new UserAuthenticationResult() {{
                 Authenticated = false;
-                user.Id = null;
+                UserId = null;
             }};
         }
 

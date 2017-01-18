@@ -1,5 +1,6 @@
 package com.eniacdevelopment.EniacHome;
 
+import com.eniacdevelopment.EniacHome.DataModel.User.Credentials;
 import com.eniacdevelopment.EniacHome.DataModel.User.User;
 import com.eniacdevelopment.EniacHome.DataModel.User.UserRole;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.Response;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -30,6 +32,16 @@ public class UserResourceTest {
     @After
     public void tearDown() throws Exception {
         server.stop();
+    }
+
+    @Test
+    public void x() {
+        Credentials credentials = new Credentials() {{
+            Username = "ft";
+            Password = "ft";
+        }};
+
+        Response response = target.path("authentication").request().post(Entity.json(credentials));
     }
 
     @Test
