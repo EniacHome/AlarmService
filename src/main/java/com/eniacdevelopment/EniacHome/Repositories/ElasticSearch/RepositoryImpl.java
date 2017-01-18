@@ -180,7 +180,6 @@ public abstract class RepositoryImpl<T extends Entity> implements Repository<T> 
                 item = this.objectMapper.readValue(searchHit.getSourceRef().toBytes(), type);
             } catch (IOException e) {
                 e.printStackTrace();
-                return null;
             }
             if(item != null) {
                 items.add(item);
@@ -200,17 +199,16 @@ public abstract class RepositoryImpl<T extends Entity> implements Repository<T> 
                     .get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
 
         List<T> items = new ArrayList<>();
         for(SearchHit searchHit : searchResponse.getHits()){
-            T item;
+            T item = null;
             try {
                 item = this.objectMapper.readValue(searchHit.getSourceRef().toBytes(), type);
             } catch (IOException e) {
                 e.printStackTrace();
-                return null;
             }
             if(item != null) {
                 items.add(item);

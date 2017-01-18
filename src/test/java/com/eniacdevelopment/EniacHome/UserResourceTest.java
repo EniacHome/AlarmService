@@ -10,8 +10,6 @@ import org.junit.Test;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -43,8 +41,7 @@ public class UserResourceTest {
     @Test
     public void addUser(){
         User user = new User(){{
-            Id = "lg";
-            Username = "Lars";
+            Username = "Mlezi";
             Firstname = "Lars";
             Lastname = "Gardien";
             PasswordHash = "Password";
@@ -56,19 +53,14 @@ public class UserResourceTest {
 
     @Test
     public void getUser(){
-        User response = target.path("user").path("lg").request().get(User.class);
+        User response = target.path("user").path("AVmy_EvV1E_NzL_cpS59").request().get(User.class);
         assertEquals("lg", response.Id);
     }
 
     @Test
     public void updateUser(){
-
-        final List<UserRole> roleSet = new ArrayList<UserRole>(){{
-            add(UserRole.User);
-        }};
-
         User user = new User(){{
-            Id = "lg";
+            Id = "AVmzFsVu1E_NzL_cpS6D";
             Username = "LarsjeParsje";
         }};
 
@@ -77,7 +69,7 @@ public class UserResourceTest {
 
     @Test
     public void deleteUser(){
-        this.target.path("user").path("lg").request().delete();
+        this.target.path("user").path("AVmzFsVu1E_NzL_cpS6D").request().delete();
     }
 
 }

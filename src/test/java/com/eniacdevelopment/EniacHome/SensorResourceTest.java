@@ -82,6 +82,6 @@ public class SensorResourceTest {
 
     @Test
     public void deleteSensor() {
-        this.target.path("sensor").path("1").request().delete();
+        this.target.path("sensor").path("3").request().delete();
     }
 }

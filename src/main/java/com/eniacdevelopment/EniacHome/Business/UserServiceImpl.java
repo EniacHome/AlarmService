@@ -43,6 +43,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(User user) {
+        if (this.userRepository.getByUserName(user.Username) != null) {
+            return;
+        }
+
+        user.Id = null;
         this.userRepository.add(user);
     }
 
