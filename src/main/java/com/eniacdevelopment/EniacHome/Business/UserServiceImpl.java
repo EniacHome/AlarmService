@@ -65,6 +65,13 @@ public class UserServiceImpl implements UserService {
     public UserAuthenticationResult authenticateUser(Credentials credentials) {
         User user = this.userRepository.getByUserName(credentials.Username);
 
+        if (user == null) {
+            return new UserAuthenticationResult() {{
+                Authenticated = false;
+                user.Id = null;
+            }};
+        }
+
         Boolean authenticated = this.userUtils.AuthenticateUser(credentials, user);
         return new UserAuthenticationResult() {{
             Authenticated = authenticated;
