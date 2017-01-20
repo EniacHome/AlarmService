@@ -1,5 +1,6 @@
 package com.eniacdevelopment.EniacHome.Application;
 
+import com.eniacdevelopment.EniacHome.Binding.Factory.PropertiesFactoryBinder;
 import com.eniacdevelopment.EniacHome.Binding.MainBinder;
 import com.eniacdevelopment.EniacHome.Features.AuthenticationFilter;
 import com.eniacdevelopment.EniacHome.Features.ImmediateFeature;
@@ -14,13 +15,15 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Properties;
 
 /**
  * Main class.
  */
 public class Main {
     // Base URI the Grizzly HTTP server will listen on
-    public static String BASE_URI = "http://localhost:9090/service/";
+    public static final String BASE_URI_KEY = "BASE_URI";
+    public static String BASE_URI = "http://localhost:9090/service";
 
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
@@ -58,7 +61,8 @@ public class Main {
      * @throws IOException
      */
     public static void main(String[] args) {
-        BASE_URI = args[0];
+        Properties properties = new PropertiesFactoryBinder().provide();
+        BASE_URI = properties.getProperty(BASE_URI_KEY);
 
         final HttpServer server = startServer();
         System.out.println(String.format("Jersey app started with WADL available at "

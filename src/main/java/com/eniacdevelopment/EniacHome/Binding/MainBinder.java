@@ -1,5 +1,6 @@
 package com.eniacdevelopment.EniacHome.Binding;
 
+import com.eniacdevelopment.EniacHome.Binding.Factory.PropertiesFactoryBinder;
 import com.eniacdevelopment.EniacHome.DataModel.Configuration.SerialConfiguration;
 import com.eniacdevelopment.EniacHome.Repositories.ElasticSearch.SerialConfigurationRepository;
 import com.eniacdevelopment.EniacHome.Repositories.ElasticSearch.TokenRepositoryImpl;
@@ -25,6 +26,8 @@ public class MainBinder extends AbstractBinder {
         install(new SensorBinder());
         install(new AlarmBinder());
         install(new ServiceBinder());
+
+        install(new PropertiesFactoryBinder());
 
         bind(UserRepositoryImpl.class).to(UserRepository.class);
         bind(TokenRepositoryImpl.class).to(TokenRepository.class);
