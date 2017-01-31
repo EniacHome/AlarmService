@@ -71,6 +71,12 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     public void disableAlarm() {
+        AlarmStatus alarmStatus = new AlarmStatus() {{
+            Enabled = false;
+            Level = Integer.MAX_VALUE;
+        }};
+        this.alarmStatusRepository.setAlarmStatus(alarmStatus);
+
         this.serialSubject.stopAlarm();
 
         Set<Map.Entry<String, SensorStatus>> sensorStatuses = this.sensorStatusRepository.getAll();
@@ -80,12 +86,6 @@ public class AlarmServiceImpl implements AlarmService {
                 this.serialSubject.triggerEvent(statusEntry.getKey());
             }
         }
-
-        AlarmStatus alarmStatus = new AlarmStatus() {{
-            Enabled = false;
-            Level = Integer.MAX_VALUE;
-        }};
-        this.alarmStatusRepository.setAlarmStatus(alarmStatus);
 
         AlarmEvent alarmEvent = new AlarmEvent() {{
             Enabled = false;
