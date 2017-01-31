@@ -91,14 +91,16 @@ public class SerialSubject implements SerialPortDataListener {
         System.out.println("AutoBaud successful.");
     }
 
-    public void triggerSensorEvent(String sensorId) {
-        SensorStatus sensorStatus = this.sensorStatusRepository.get(sensorId);
+    public void startAlarm() {
+        this.serialPortInstance.writeBytes(new byte[]{0}, 1);
+    }
 
-        if (sensorStatus.Alarmed) {
-            this.serialPortInstance.writeBytes(new byte[]{0}, 1);
-        } else {
-            this.serialPortInstance.writeBytes(new byte[]{1}, 1);
-        }
+    public void stopAlarm() {
+        this.serialPortInstance.writeBytes(new byte[]{1}, 1);
+    }
+
+    public void triggerEvent(String sensorId) {
+        SensorStatus sensorStatus = this.sensorStatusRepository.get(sensorId);
 
         synchronized (this.eventListenerObservers) {
             for (EventListenerObserver eventListenerObserver : this.eventListenerObservers) {
@@ -141,6 +143,9 @@ public class SerialSubject implements SerialPortDataListener {
                 // Create SensorNotification for all observers
                 SensorNotification notification = this.packetParser.parse(packetInfo, value, serialPortEvent);
                 Boolean alarmed = this.alarmCalculator.calculate(notification);
+                if (alarmed) {
+                    this.startAlarm();
+                }
 
                 SensorStatus sensorStatus = new SensorStatus() {{
                     Value = notification.Value;
@@ -149,7 +154,7 @@ public class SerialSubject implements SerialPortDataListener {
                 }};
                 this.sensorStatusRepository.put(notification.Id, sensorStatus);
 
-                this.triggerSensorEvent(notification.Id);
+                this.triggerEvent(notification.Id);
             } catch (Exception ex) {
                 System.out.println("SerialEvent ERROR!");
                 ex.printStackTrace();

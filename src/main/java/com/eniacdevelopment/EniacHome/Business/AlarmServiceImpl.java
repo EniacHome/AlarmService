@@ -57,7 +57,7 @@ public class AlarmServiceImpl implements AlarmService {
             for (Map.Entry<String, SensorStatus> statusEntry : sensorStatuses) {
                 if (this.alarmCalculator.calculate(statusEntry.getKey())) {
                     statusEntry.getValue().Alarmed = true;
-                    this.serialSubject.triggerSensorEvent(statusEntry.getKey());
+                    this.serialSubject.triggerEvent(statusEntry.getKey());
                 }
             }
         }, 10, TimeUnit.SECONDS);   //TODO Delay should come from es configuration
@@ -71,10 +71,14 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     public void disableAlarm() {
+        this.serialSubject.stopAlarm();
+
         Set<Map.Entry<String, SensorStatus>> sensorStatuses = this.sensorStatusRepository.getAll();
         for (Map.Entry<String, SensorStatus> statusEntry : sensorStatuses) {
-            statusEntry.getValue().Alarmed = false;
-            this.serialSubject.triggerSensorEvent(statusEntry.getKey());
+            if (statusEntry.getValue().Alarmed) {
+                statusEntry.getValue().Alarmed = false;
+                this.serialSubject.triggerEvent(statusEntry.getKey());
+            }
         }
 
         AlarmStatus alarmStatus = new AlarmStatus() {{

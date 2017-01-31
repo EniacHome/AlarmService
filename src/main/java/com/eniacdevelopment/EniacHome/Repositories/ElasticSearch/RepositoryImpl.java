@@ -170,7 +170,7 @@ public abstract class RepositoryImpl<T extends Entity> implements Repository<T> 
                     .get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<T>();
         }
 
         List<T> items = new ArrayList<>();
