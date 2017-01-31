@@ -67,15 +67,15 @@ public class AlarmCalculatorImpl implements AlarmCalculator {
     private boolean compare(CompareMethod compareMethod, int compareValue, int value) {
         switch (compareMethod) {
             case Equal:
-                return compareValue == value;
+                return value == compareValue;
             case Greater:
-                return compareValue > value;
+                return value > compareValue;
             case Smaller:
-                return compareValue < value;
+                return value < compareValue;
             case GreaterOrEqual:
-                return compareValue >= value;
+                return value >= compareValue;
             case SmallerOrEqual:
-                return compareValue <= value;
+                return value <= compareValue;
             default:
                 return false;
         }

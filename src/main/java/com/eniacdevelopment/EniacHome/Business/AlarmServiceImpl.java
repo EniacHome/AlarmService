@@ -44,16 +44,16 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     public void enableAlarm(int level) {
-        AlarmStatus alarmStatus = new AlarmStatus() {{
-            Enabled = true;
-            Level = level;
-        }};
-        this.alarmStatusRepository.setAlarmStatus(alarmStatus);
-
         Set<Map.Entry<String, SensorStatus>> sensorStatuses = this.sensorStatusRepository.getAll();
 
         final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.schedule(() -> {
+            AlarmStatus alarmStatus = new AlarmStatus() {{
+                Enabled = true;
+                Level = level;
+            }};
+            this.alarmStatusRepository.setAlarmStatus(alarmStatus);
+
             for (Map.Entry<String, SensorStatus> statusEntry : sensorStatuses) {
                 if (this.alarmCalculator.calculate(statusEntry.getKey())) {
                     statusEntry.getValue().Alarmed = true;
